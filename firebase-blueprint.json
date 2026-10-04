@@ -1,0 +1,109 @@
+{
+  "entities": {
+    "UserAccount": {
+      "title": "UserAccount",
+      "description": "Registered student, teacher, school admin or main administrator account in FältKoll.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "email": { "type": "string" },
+        "displayName": { "type": "string" },
+        "role": { "type": "string", "enum": ["STUDENT", "TEACHER", "SCHOOL_ADMIN", "ADMIN"] },
+        "accountContext": { "type": "string", "enum": ["WORKPLACE", "APL", "SCHOOL"] },
+        "password": { "type": "string" },
+        "schoolOrCompany": { "type": "string" },
+        "studentGroup": { "type": "string" },
+        "schoolClass": { "type": "string" },
+        "teacherId": { "type": "string" },
+        "notes": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "lastLogin": { "type": "string" }
+      },
+      "required": ["id", "email", "displayName", "role", "createdAt"]
+    },
+    "TeacherExercise": {
+      "title": "TeacherExercise",
+      "description": "Custom or template-based field exercise created by a teacher for students.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "code": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "projectType": { "type": "string" },
+        "targetGroup": { "type": "string" },
+        "createdByTeacherId": { "type": "string" },
+        "createdByTeacherName": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" },
+        "moments": { "type": "array" },
+        "exerciseSettings": { "type": "object" }
+      },
+      "required": ["id", "code", "title", "projectType", "moments"]
+    },
+    "StudentGroupsConfig": {
+      "title": "StudentGroupsConfig",
+      "description": "Custom student groups and programs created by teachers or admins.",
+      "type": "object",
+      "properties": {
+        "customGroups": { "type": "array" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["customGroups"]
+    },
+    "InviteCode": {
+      "title": "InviteCode",
+      "description": "Unique single-use registration invite code generated exclusively by the administrator.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "code": { "type": "string" },
+        "createdBy": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "roleToAssign": { "type": "string" },
+        "accountContext": { "type": "string" },
+        "companyOrSchool": { "type": "string" },
+        "consumed": { "type": "boolean" },
+        "consumedBy": { "type": "string" },
+        "consumedAt": { "type": "string" },
+        "notes": { "type": "string" }
+      },
+      "required": ["id", "code", "consumed", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/UserAccount" },
+      "description": "Global user accounts for FältKoll students, teachers, school admins and administrators."
+    },
+    "/exercises/{exerciseId}": {
+      "schema": { "$ref": "#/entities/TeacherExercise" },
+      "description": "Custom exercises created by teachers in the Kreatörspanel."
+    },
+    "/student_groups/{docId}": {
+      "schema": { "$ref": "#/entities/StudentGroupsConfig" },
+      "description": "Custom student groups and program categories."
+    },
+    "/system/{docId}": {
+      "schema": { "$ref": "#/entities/StudentGroupsConfig" },
+      "description": "System configuration documents and connection health check."
+    },
+    "/invite_codes/{codeId}": {
+      "schema": { "$ref": "#/entities/InviteCode" },
+      "description": "Cryptographically secure single-use registration invite codes generated exclusively by the administrator."
+    },
+    "/projects/{projectId}": {
+      "schema": {
+        "title": "Project",
+        "description": "Field inspection project",
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "projectType": { "type": "string" }
+        }
+      },
+      "description": "Synced student and field projects."
+    }
+  }
+}

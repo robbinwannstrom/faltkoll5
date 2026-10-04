@@ -1,0 +1,8 @@
+{
+  "name": "Remix Remix Remix FältKoll || Anläggning \u0026 Egenkontroll v0.4",
+  "description": "Offlinesäker digital egenkontroll för schakt, husgrund, plattsättning och enskilt avlopp enligt AMA med fotobevis, tidsstämpel och juridisk rapport.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

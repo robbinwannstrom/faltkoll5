@@ -1,0 +1,274 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    background-color: #121212;
+    color: #f8fafc;
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  }
+}
+
+/* Print Styles for Legal Formal Report */
+@media print {
+  body {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+  }
+
+  header,
+  .print\:hidden {
+    display: none !important;
+  }
+
+  #printable-report {
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .page-break-inside-avoid {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+}
+
+/* Touch responsiveness optimization for fieldwork */
+button, input, select, textarea {
+  touch-action: manipulation;
+}
+
+/* Palette 2: Safety Yellow / Hi-Vis & Asfalt */
+.palette-yellow {
+  --color-accent: #facc15;
+}
+.palette-yellow .bg-orange-500,
+.palette-yellow .bg-amber-500 {
+  background-color: #facc15 !important;
+  color: #000000 !important;
+}
+.palette-yellow .hover\:bg-orange-400:hover,
+.palette-yellow .hover\:bg-amber-400:hover {
+  background-color: #fde047 !important;
+  color: #000000 !important;
+}
+.palette-yellow .text-orange-400,
+.palette-yellow .text-amber-400 {
+  color: #facc15 !important;
+}
+.palette-yellow .text-orange-300,
+.palette-yellow .text-amber-300 {
+  color: #fef08a !important;
+}
+.palette-yellow .border-orange-500,
+.palette-yellow .border-orange-500\/40,
+.palette-yellow .border-amber-500\/40,
+.palette-yellow .border-amber-500\/30 {
+  border-color: #facc15 !important;
+}
+.palette-yellow .border-orange-400 {
+  border-color: #facc15 !important;
+}
+.palette-yellow .bg-orange-950,
+.palette-yellow .bg-orange-950\/60,
+.palette-yellow .bg-orange-950\/80,
+.palette-yellow .bg-amber-950 {
+  background-color: #2e2600 !important;
+}
+.palette-yellow .border-orange-800,
+.palette-yellow .border-orange-800\/80,
+.palette-yellow .border-amber-800 {
+  border-color: #854d0e !important;
+}
+
+/* Palette 3: High-contrast Daylight mode (Outdoor direct sunlight) */
+.palette-daylight {
+  background-color: #f1f5f9 !important;
+  color: #0f172a !important;
+}
+.palette-daylight header,
+.palette-daylight .bg-\[\#121212\],
+.palette-daylight .bg-\[\#10131d\],
+.palette-daylight .bg-\[\#141414\],
+.palette-daylight .bg-slate-950 {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+}
+.palette-daylight .bg-\[\#1a1a1a\],
+.palette-daylight .bg-\[\#1c1c1c\],
+.palette-daylight .bg-\[\#181818\],
+.palette-daylight .bg-\[\#1e1e1e\],
+.palette-daylight .bg-slate-900,
+.palette-daylight .bg-slate-900\/90 {
+  background-color: #f8fafc !important;
+  color: #0f172a !important;
+  border-color: #cbd5e1 !important;
+}
+.palette-daylight .border-\[\#242424\],
+.palette-daylight .border-\[\#262626\],
+.palette-daylight .border-\[\#282828\],
+.palette-daylight .border-\[\#2a2a2a\],
+.palette-daylight .border-\[\#2c2c2c\],
+.palette-daylight .border-\[\#2d2d2d\],
+.palette-daylight .border-\[\#333333\],
+.palette-daylight .border-\[\#383838\],
+.palette-daylight .border-slate-800,
+.palette-daylight .border-slate-700 {
+  border-color: #cbd5e1 !important;
+}
+.palette-daylight .text-white {
+  color: #0f172a !important;
+}
+.palette-daylight .text-slate-100,
+.palette-daylight .text-slate-200 {
+  color: #1e293b !important;
+}
+.palette-daylight .text-slate-300,
+.palette-daylight .text-slate-400 {
+  color: #475569 !important;
+}
+.palette-daylight .bg-orange-500 {
+  background-color: #ea580c !important;
+  color: #ffffff !important;
+}
+.palette-daylight .hover\:bg-orange-400:hover {
+  background-color: #c2410c !important;
+}
+.palette-daylight .bg-orange-950,
+.palette-daylight .bg-orange-950\/60,
+.palette-daylight .bg-orange-950\/80 {
+  background-color: #ffedd5 !important;
+  color: #9a3412 !important;
+}
+.palette-daylight .border-orange-800 {
+  border-color: #fdba74 !important;
+}
+
+/* Palette 4: Nordic Pro Blue */
+.palette-blue {
+  --color-accent: #0284c7;
+}
+.palette-blue .bg-orange-500,
+.palette-blue .bg-amber-500 {
+  background-color: #0284c7 !important;
+  color: #ffffff !important;
+}
+.palette-blue .hover\:bg-orange-400:hover,
+.palette-blue .hover\:bg-amber-400:hover {
+  background-color: #0369a1 !important;
+  color: #ffffff !important;
+}
+.palette-blue .text-orange-400,
+.palette-blue .text-amber-400 {
+  color: #38bdf8 !important;
+}
+.palette-blue .text-orange-300,
+.palette-blue .text-amber-300 {
+  color: #7dd3fc !important;
+}
+.palette-blue .border-orange-500,
+.palette-blue .border-orange-500\/40,
+.palette-blue .border-amber-500\/40 {
+  border-color: #0284c7 !important;
+}
+.palette-blue .border-orange-400 {
+  border-color: #38bdf8 !important;
+}
+.palette-blue .bg-orange-950,
+.palette-blue .bg-orange-950\/60,
+.palette-blue .bg-orange-950\/80 {
+  background-color: #082f49 !important;
+}
+.palette-blue .border-orange-800,
+.palette-blue .border-orange-800\/80 {
+  border-color: #0369a1 !important;
+}
+
+/* Palette 5: Emerald Forest */
+.palette-emerald {
+  --color-accent: #10b981;
+}
+.palette-emerald .bg-orange-500,
+.palette-emerald .bg-amber-500 {
+  background-color: #10b981 !important;
+  color: #000000 !important;
+}
+.palette-emerald .hover\:bg-orange-400:hover,
+.palette-emerald .hover\:bg-amber-400:hover {
+  background-color: #34d399 !important;
+  color: #000000 !important;
+}
+.palette-emerald .text-orange-400,
+.palette-emerald .text-amber-400 {
+  color: #34d399 !important;
+}
+.palette-emerald .text-orange-300,
+.palette-emerald .text-amber-300 {
+  color: #6ee7b7 !important;
+}
+.palette-emerald .border-orange-500,
+.palette-emerald .border-orange-500\/40,
+.palette-emerald .border-amber-500\/40 {
+  border-color: #10b981 !important;
+}
+.palette-emerald .border-orange-400 {
+  border-color: #34d399 !important;
+}
+.palette-emerald .bg-orange-950,
+.palette-emerald .bg-orange-950\/60,
+.palette-emerald .bg-orange-950\/80 {
+  background-color: #064e3b !important;
+}
+.palette-emerald .border-orange-800,
+.palette-emerald .border-orange-800\/80 {
+  border-color: #047857 !important;
+}
+
+/* Palette 6: Custom User Theme (Driven by CSS variables on documentElement) */
+.palette-custom body,
+.palette-custom .bg-\[\#121212\],
+.palette-custom .bg-\[\#0e0e0e\] {
+  background-color: var(--custom-bg, #121212) !important;
+}
+.palette-custom header,
+.palette-custom .bg-\[\#1a1a1a\],
+.palette-custom .bg-\[\#181818\],
+.palette-custom .bg-\[\#161616\],
+.palette-custom .bg-\[\#141414\],
+.palette-custom .bg-\[\#1c1c1c\] {
+  background-color: var(--custom-card, #1a1a1a) !important;
+}
+.palette-custom .bg-orange-500,
+.palette-custom .bg-amber-500 {
+  background-color: var(--custom-accent, #f97316) !important;
+  color: var(--custom-btn-text, #000000) !important;
+}
+.palette-custom .hover\:bg-orange-400:hover,
+.palette-custom .hover\:bg-amber-400:hover {
+  background-color: var(--custom-accent, #f97316) !important;
+  filter: brightness(1.1);
+  color: var(--custom-btn-text, #000000) !important;
+}
+.palette-custom .text-orange-400,
+.palette-custom .text-orange-300,
+.palette-custom .text-amber-400 {
+  color: var(--custom-accent, #f97316) !important;
+}
+.palette-custom .border-orange-500,
+.palette-custom .border-orange-500\/40,
+.palette-custom .border-orange-500\/50,
+.palette-custom .border-orange-500\/60,
+.palette-custom .border-orange-400,
+.palette-custom .border-orange-800,
+.palette-custom .border-orange-800\/80 {
+  border-color: var(--custom-accent, #f97316) !important;
+}
+.palette-custom .bg-orange-950,
+.palette-custom .bg-orange-950\/60,
+.palette-custom .bg-orange-950\/80,
+.palette-custom .bg-orange-500\/15,
+.palette-custom .bg-orange-500\/20 {
+  background-color: color-mix(in srgb, var(--custom-accent, #f97316) 18%, transparent) !important;
+}

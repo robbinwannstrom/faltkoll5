@@ -1,0 +1,39 @@
+{
+  "id": "./",
+  "name": "FältKoll Egenkontroll",
+  "short_name": "FältKoll",
+  "description": "Minimalistisk egenkontroll och byggstöd för anläggning och markarbete enligt AMA",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#121212",
+  "background_color": "#121212",
+  "categories": ["education", "productivity", "utilities"],
+  "icons": [
+    {
+      "src": "./pwa-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./pwa-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./pwa-maskable-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

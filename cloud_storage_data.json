@@ -1,0 +1,642 @@
+{
+  "users": [
+    {
+      "id": "usr_1790725123408_pqio",
+      "email": "erik.bygg@skola.se",
+      "displayName": "Erik Svensson",
+      "role": "STUDENT",
+      "password": "hemligt123",
+      "schoolOrCompany": "Bygg & Anläggning",
+      "createdAt": "2026-09-29 23:38",
+      "lastLogin": "2026-09-29 23:38",
+      "schoolClass": "BA24 (Bygg Åk 2)",
+      "studentGroup": "Byggprogrammet (BA)"
+    },
+    {
+      "id": "usr_angfar_teacher",
+      "email": "angfar@skola.se",
+      "displayName": "Angfar",
+      "role": "TEACHER",
+      "password": "1234",
+      "schoolOrCompany": "Bygg- & Anläggningsutbildning",
+      "createdAt": "2026-09-29 08:00",
+      "lastLogin": "2026-09-29 23:38"
+    },
+    {
+      "id": "usr_admin_skola",
+      "email": "admin@faltkoll.se",
+      "displayName": "Administratör",
+      "role": "ADMIN",
+      "password": "admin123",
+      "schoolOrCompany": "Bygg- & Anläggningsutbildning",
+      "createdAt": "2026-09-29 08:00",
+      "lastLogin": "2026-09-29 10:50"
+    },
+    {
+      "id": "usr_1790594250865_0wxq",
+      "email": "johan.elev@skola.se",
+      "displayName": "Johan Elev",
+      "role": "STUDENT",
+      "password": "mittlosenord123",
+      "schoolOrCompany": "Bygg- & Anläggningsutbildning",
+      "createdAt": "2026-09-28 11:17",
+      "lastLogin": "2026-09-28 11:17",
+      "schoolClass": "BA24 (Bygg Åk 2)",
+      "studentGroup": "Byggprogrammet (BA)"
+    },
+    {
+      "id": "usr_1790594214948_pig3",
+      "email": "ny_elev@skola.se",
+      "displayName": "Ny Elev",
+      "role": "STUDENT",
+      "password": "hemligt123",
+      "schoolOrCompany": "Byggprogrammet",
+      "createdAt": "2026-09-28 11:16",
+      "lastLogin": "2026-09-28 11:16",
+      "schoolClass": "ANL23 (Anläggare)",
+      "studentGroup": "Anläggare (Mark & Anläggning)"
+    },
+    {
+      "id": "usr_1790593988229_yrbz",
+      "email": "test@skola.se",
+      "displayName": "Test Person",
+      "role": "STUDENT",
+      "password": "1234",
+      "schoolOrCompany": "Bygg & Anläggningsutbildning",
+      "createdAt": "2026-09-28 11:13",
+      "lastLogin": "Aldrig inloggad",
+      "schoolClass": "BA25 (Bygg Åk 1)",
+      "studentGroup": "Byggprogrammet (BA)"
+    },
+    {
+      "id": "usr_admin_1",
+      "email": "admin@faltkoll.se",
+      "displayName": "Administratör",
+      "role": "ADMIN",
+      "schoolOrCompany": "Anläggningsutbildning",
+      "createdAt": "2026-01-01 08:00",
+      "lastLogin": "2026-09-28 00:17",
+      "password": "admin123"
+    },
+    {
+      "id": "usr_larare_1",
+      "email": "larare@skola.se",
+      "displayName": "Johan Lindqvist (Lärare)",
+      "role": "TEACHER",
+      "schoolOrCompany": "Yrkesakademin / Byggprogrammet",
+      "createdAt": "2026-01-10 08:00",
+      "lastLogin": "2026-09-24 14:00",
+      "password": "larare123"
+    },
+    {
+      "id": "usr_elev_1",
+      "email": "elev@skola.se",
+      "displayName": "Elev / Lärling",
+      "role": "STUDENT",
+      "schoolOrCompany": "Yrkesakademin / Byggprogrammet",
+      "createdAt": "2026-02-01 09:30",
+      "lastLogin": "2026-09-24 15:10",
+      "password": "elev123",
+      "schoolClass": "BA25 (Bygg Åk 1)",
+      "studentGroup": "Byggprogrammet (BA)"
+    },
+    {
+      "id": "usr_admin_2",
+      "email": "admin@bygg.se",
+      "displayName": "Arbetsledare / Skolledare",
+      "role": "ADMIN",
+      "schoolOrCompany": "Anläggningssektionen",
+      "createdAt": "2026-01-01 08:00",
+      "lastLogin": "2026-09-24 12:00"
+    },
+    {
+      "id": "usr_admin_skola",
+      "email": "admin@skola.se",
+      "displayName": "Administratör (Skola)",
+      "role": "ADMIN",
+      "password": "admin123",
+      "schoolOrCompany": "Bygg- & Anläggningsutbildning",
+      "createdAt": "2026-01-01 08:00",
+      "lastLogin": "2026-09-29 08:00"
+    }
+  ],
+  "notifications": [],
+  "projects": {
+    "proj_1790363886439_hg9sm": {
+      "id": "proj_1790363886439_hg9sm",
+      "name": "Husgrund 1",
+      "projectType": "HUSGRUND",
+      "propertyDesignation": "Ej angiven fastighet",
+      "clientName": "Beställare / Byggherre",
+      "contractorName": "Entreprenad AB",
+      "projectNumber": "3313200-7673",
+      "applicableDocs": "Bygghandling M30-1-01, M-10.1-01, AMA Anläggning 20",
+      "createdAt": "2026-09-25 21:18",
+      "updatedAt": "2026-09-25 19:18",
+      "notes": "",
+      "moments": {
+        "1.1": {
+          "momentId": "1.1",
+          "status": "RED",
+          "comment": "",
+          "signature": "",
+          "photos": []
+        },
+        "1.2": {
+          "momentId": "1.2",
+          "status": "RED",
+          "comment": "",
+          "signature": "",
+          "photos": []
+        },
+        "1.3": {
+          "momentId": "1.3",
+          "status": "RED",
+          "comment": "",
+          "signature": "",
+          "photos": []
+        },
+        "1.4": {
+          "momentId": "1.4",
+          "status": "RED",
+          "comment": "",
+          "signature": "",
+          "photos": []
+        },
+        "1.5": {
+          "momentId": "1.5",
+          "status": "RED",
+          "comment": "",
+          "signature": "",
+          "photos": []
+        },
+        "1.6": {
+          "momentId": "1.6",
+          "status": "RED",
+          "comment": "",
+          "signature": "",
+          "photos": []
+        },
+        "1.7": {
+          "momentId": "1.7",
+          "status": "RED",
+          "comment": "",
+          "signature": "",
+          "photos": []
+        },
+        "1.8": {
+          "momentId": "1.8",
+          "status": "RED",
+          "comment": "",
+          "signature": "",
+          "photos": []
+        },
+        "1.9": {
+          "momentId": "1.9",
+          "status": "RED",
+          "comment": "",
+          "signature": "",
+          "photos": []
+        },
+        "1.10": {
+          "momentId": "1.10",
+          "status": "RED",
+          "comment": "",
+          "signature": "",
+          "photos": []
+        },
+        "1.11": {
+          "momentId": "1.11",
+          "status": "RED",
+          "comment": "",
+          "signature": "",
+          "photos": []
+        },
+        "1.12": {
+          "momentId": "1.12",
+          "status": "RED",
+          "comment": "",
+          "signature": "",
+          "photos": []
+        },
+        "1.13": {
+          "momentId": "1.13",
+          "status": "RED",
+          "comment": "",
+          "signature": "",
+          "photos": []
+        },
+        "1.14": {
+          "momentId": "1.14",
+          "status": "RED",
+          "comment": "",
+          "signature": "",
+          "photos": []
+        }
+      },
+      "preInspectionCompleted": false,
+      "preInspectionPhotos": [],
+      "isGroupProject": true,
+      "syncEnabled": true,
+      "groupCode": "BYGG-73",
+      "lastSyncedAt": "2026-09-25 19:18"
+    },
+    "proj_erik_grund_1": {
+      "id": "proj_erik_grund_1",
+      "name": "Övning: Platta på mark - Schakt & Makadam",
+      "projectType": "HUSGRUND",
+      "propertyDesignation": "Bygghall 2, Skoltomten 1:1",
+      "clientName": "Yrkeslärare Mark & Betong",
+      "contractorName": "Erik Svensson",
+      "studentId": "usr_1790725123408_pqio",
+      "studentName": "Erik Svensson",
+      "studentEmail": "erik.bygg@skola.se",
+      "schoolClass": "BA24 (Bygg Åk 2)",
+      "studentGroup": "Byggprogrammet (BA)",
+      "projectNumber": "GRUND-1",
+      "exerciseCode": "GRUND-1",
+      "isTeacherExercise": true,
+      "createdAt": "2026-10-02 08:30",
+      "updatedAt": "2026-10-03 17:02",
+      "lastSyncedAt": "2026-10-03 10:45",
+      "syncEnabled": true,
+      "notes": "Arbetar med schaktning och kapillärbrytande makadambädd. Alla mått kontrolleras med rotationslaser.",
+      "fieldMeasurements": {
+        "sideA": 10,
+        "sideB": 8,
+        "diagonal": 12.81,
+        "fallCmPerM": 1
+      },
+      "preInspectionCompleted": true,
+      "moments": {
+        "1.1": {
+          "momentId": "1.1",
+          "status": "GREEN",
+          "comment": "Utsättning med profilställningar och linor. Kryssmått 12.81 m stämmer exakt på millimetern.",
+          "signature": "Erik Svensson",
+          "completedAt": "2026-10-03 09:10",
+          "weather": "SOL",
+          "measuredValue": "12.81 m (±1 mm)",
+          "structuredChecks": [
+            "Profilställningar stabilt förankrade",
+            "Snören i våg och 90 graders vinkel",
+            "Diagonalmått kontrollerat"
+          ],
+          "photos": [
+            {
+              "id": "ph_erik_1",
+              "capturedAt": "2026-10-03 09:12",
+              "category": "Kontrollbevis",
+              "caption": "Profilsnören uppspända och kryssmått verifierat",
+              "dataUrl": "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22480%22%20viewBox%3D%220%200%20640%20480%22%3E%0A%20%20%20%20%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%20%20%20%20%3ClinearGradient%20id%3D%22g_38bdf8%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23182234%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%230b1120%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%20%20%20%20%3Crect%20width%3D%22640%22%20height%3D%22480%22%20fill%3D%22url(%23g_38bdf8)%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Crect%20x%3D%2224%22%20y%3D%2224%22%20width%3D%22592%22%20height%3D%22432%22%20rx%3D%2214%22%20fill%3D%22none%22%20stroke%3D%22%2338bdf8%22%20stroke-width%3D%222.5%22%20stroke-dasharray%3D%226%204%22%20opacity%3D%220.6%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Ccircle%20cx%3D%22320%22%20cy%3D%22180%22%20r%3D%2250%22%20fill%3D%22%2338bdf8%22%20opacity%3D%220.12%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22175%22%20font-family%3D%22system-ui%2C%20-apple-system%2C%20sans-serif%22%20font-size%3D%2224%22%20font-weight%3D%22900%22%20fill%3D%22%2338bdf8%22%20text-anchor%3D%22middle%22%3E%F0%9F%93%B7%20F%C3%84LTDOKUMENTATION%3C%2Ftext%3E%0A%20%20%20%20%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22210%22%20font-family%3D%22system-ui%2C%20-apple-system%2C%20sans-serif%22%20font-size%3D%2218%22%20font-weight%3D%22800%22%20fill%3D%22%23ffffff%22%20text-anchor%3D%22middle%22%3EMoment%201.1%3A%20Uts%C3%A4ttning%20%26%20Kryssm%C3%A5tt%3C%2Ftext%3E%0A%20%20%20%20%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22245%22%20font-family%3D%22system-ui%2C%20-apple-system%2C%20sans-serif%22%20font-size%3D%2213%22%20font-weight%3D%22500%22%20fill%3D%22%2394a3b8%22%20text-anchor%3D%22middle%22%3EKryssm%C3%A5tt%2012.81%20m%20verifierat%20med%20st%C3%A5lbandm%C3%A5tt%3C%2Ftext%3E%0A%20%20%20%20%20%20%20%20%3Crect%20x%3D%2235%22%20y%3D%22395%22%20width%3D%22570%22%20height%3D%2250%22%20rx%3D%2210%22%20fill%3D%22%23000000%22%20opacity%3D%220.85%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Ctext%20x%3D%2255%22%20y%3D%22426%22%20font-family%3D%22ui-monospace%2C%20monospace%22%20font-size%3D%2213%22%20font-weight%3D%22900%22%20fill%3D%22%23f97316%22%3EF%C3%84LTKOLL%20KONTROLLBEVIS%3C%2Ftext%3E%0A%20%20%20%20%20%20%20%20%3Ctext%20x%3D%22585%22%20y%3D%22426%22%20font-family%3D%22ui-monospace%2C%20monospace%22%20font-size%3D%2212%22%20fill%3D%22%23ffffff%22%20text-anchor%3D%22end%22%3E2026-10-03%2009%3A12%3C%2Ftext%3E%0A%20%20%20%20%20%20%3C%2Fsvg%3E"
+            }
+          ]
+        },
+        "1.2": {
+          "momentId": "1.2",
+          "status": "GREEN",
+          "comment": "Schaktat bort matjord och lera ner till fast moränbotten. Djup -420 mm.",
+          "signature": "Erik Svensson",
+          "completedAt": "2026-10-03 09:50",
+          "weather": "SOL",
+          "measuredValue": "-420 mm",
+          "photos": [
+            {
+              "id": "ph_erik_2",
+              "capturedAt": "2026-10-03 09:52",
+              "category": "Schakt",
+              "caption": "Schaktbotten avjämnad till fast morän",
+              "dataUrl": "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22480%22%20viewBox%3D%220%200%20640%20480%22%3E%0A%20%20%20%20%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%20%20%20%20%3ClinearGradient%20id%3D%22g_f97316%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23182234%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%230b1120%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%20%20%20%20%3Crect%20width%3D%22640%22%20height%3D%22480%22%20fill%3D%22url(%23g_f97316)%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Crect%20x%3D%2224%22%20y%3D%2224%22%20width%3D%22592%22%20height%3D%22432%22%20rx%3D%2214%22%20fill%3D%22none%22%20stroke%3D%22%23f97316%22%20stroke-width%3D%222.5%22%20stroke-dasharray%3D%226%204%22%20opacity%3D%220.6%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Ccircle%20cx%3D%22320%22%20cy%3D%22180%22%20r%3D%2250%22%20fill%3D%22%23f97316%22%20opacity%3D%220.12%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22175%22%20font-family%3D%22system-ui%2C%20-apple-system%2C%20sans-serif%22%20font-size%3D%2224%22%20font-weight%3D%22900%22%20fill%3D%22%23f97316%22%20text-anchor%3D%22middle%22%3E%F0%9F%93%B7%20F%C3%84LTDOKUMENTATION%3C%2Ftext%3E%0A%20%20%20%20%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22210%22%20font-family%3D%22system-ui%2C%20-apple-system%2C%20sans-serif%22%20font-size%3D%2218%22%20font-weight%3D%22800%22%20fill%3D%22%23ffffff%22%20text-anchor%3D%22middle%22%3EMoment%201.2%3A%20Schaktning%20till%20fast%20botten%3C%2Ftext%3E%0A%20%20%20%20%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22245%22%20font-family%3D%22system-ui%2C%20-apple-system%2C%20sans-serif%22%20font-size%3D%2213%22%20font-weight%3D%22500%22%20fill%3D%22%2394a3b8%22%20text-anchor%3D%22middle%22%3ELaseravv%C3%A4gning%20botten%3A%20-420%20mm%20(Tolerans%20%C2%B110%20mm%20OK)%3C%2Ftext%3E%0A%20%20%20%20%20%20%20%20%3Crect%20x%3D%2235%22%20y%3D%22395%22%20width%3D%22570%22%20height%3D%2250%22%20rx%3D%2210%22%20fill%3D%22%23000000%22%20opacity%3D%220.85%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Ctext%20x%3D%2255%22%20y%3D%22426%22%20font-family%3D%22ui-monospace%2C%20monospace%22%20font-size%3D%2213%22%20font-weight%3D%22900%22%20fill%3D%22%23f97316%22%3EF%C3%84LTKOLL%20KONTROLLBEVIS%3C%2Ftext%3E%0A%20%20%20%20%20%20%20%20%3Ctext%20x%3D%22585%22%20y%3D%22426%22%20font-family%3D%22ui-monospace%2C%20monospace%22%20font-size%3D%2212%22%20fill%3D%22%23ffffff%22%20text-anchor%3D%22end%22%3E2026-10-03%2009%3A52%3C%2Ftext%3E%0A%20%20%20%20%20%20%3C%2Fsvg%3E"
+            }
+          ]
+        },
+        "1.3": {
+          "momentId": "1.3",
+          "status": "GREEN",
+          "comment": "Fiberduk Geotextil Klass N2 utlagd över hela botten och uppdragen mot schaktkant med 50 cm överlapp.",
+          "signature": "Erik Svensson",
+          "completedAt": "2026-10-03 10:15",
+          "weather": "SOL",
+          "photos": [
+            {
+              "id": "ph_erik_3",
+              "capturedAt": "2026-10-03 10:17",
+              "category": "Schakt",
+              "caption": "Fiberduk med 50 cm överlapp enligt AMA Anläggning",
+              "dataUrl": "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22480%22%20viewBox%3D%220%200%20640%20480%22%3E%0A%20%20%20%20%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%20%20%20%20%3ClinearGradient%20id%3D%22g_10b981%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23182234%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%230b1120%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%20%20%20%20%3Crect%20width%3D%22640%22%20height%3D%22480%22%20fill%3D%22url(%23g_10b981)%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Crect%20x%3D%2224%22%20y%3D%2224%22%20width%3D%22592%22%20height%3D%22432%22%20rx%3D%2214%22%20fill%3D%22none%22%20stroke%3D%22%2310b981%22%20stroke-width%3D%222.5%22%20stroke-dasharray%3D%226%204%22%20opacity%3D%220.6%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Ccircle%20cx%3D%22320%22%20cy%3D%22180%22%20r%3D%2250%22%20fill%3D%22%2310b981%22%20opacity%3D%220.12%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22175%22%20font-family%3D%22system-ui%2C%20-apple-system%2C%20sans-serif%22%20font-size%3D%2224%22%20font-weight%3D%22900%22%20fill%3D%22%2310b981%22%20text-anchor%3D%22middle%22%3E%F0%9F%93%B7%20F%C3%84LTDOKUMENTATION%3C%2Ftext%3E%0A%20%20%20%20%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22210%22%20font-family%3D%22system-ui%2C%20-apple-system%2C%20sans-serif%22%20font-size%3D%2218%22%20font-weight%3D%22800%22%20fill%3D%22%23ffffff%22%20text-anchor%3D%22middle%22%3EMoment%201.3%3A%20Geotextil%20%2F%20Fiberduk%3C%2Ftext%3E%0A%20%20%20%20%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22245%22%20font-family%3D%22system-ui%2C%20-apple-system%2C%20sans-serif%22%20font-size%3D%2213%22%20font-weight%3D%22500%22%20fill%3D%22%2394a3b8%22%20text-anchor%3D%22middle%22%3EDuk%20N2%20utlagd%20med%2050%20cm%20%C3%B6verlapp%20i%20skarvar%3C%2Ftext%3E%0A%20%20%20%20%20%20%20%20%3Crect%20x%3D%2235%22%20y%3D%22395%22%20width%3D%22570%22%20height%3D%2250%22%20rx%3D%2210%22%20fill%3D%22%23000000%22%20opacity%3D%220.85%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Ctext%20x%3D%2255%22%20y%3D%22426%22%20font-family%3D%22ui-monospace%2C%20monospace%22%20font-size%3D%2213%22%20font-weight%3D%22900%22%20fill%3D%22%23f97316%22%3EF%C3%84LTKOLL%20KONTROLLBEVIS%3C%2Ftext%3E%0A%20%20%20%20%20%20%20%20%3Ctext%20x%3D%22585%22%20y%3D%22426%22%20font-family%3D%22ui-monospace%2C%20monospace%22%20font-size%3D%2212%22%20fill%3D%22%23ffffff%22%20text-anchor%3D%22end%22%3E2026-10-03%2010%3A17%3C%2Ftext%3E%0A%20%20%20%20%20%20%3C%2Fsvg%3E"
+            }
+          ]
+        },
+        "1.4": {
+          "momentId": "1.4",
+          "status": "GREEN",
+          "comment": "Makadambädd 8/16 mm utlagd i 20 cm lager och paddad. Laserhöjd mätt till -220 mm över 8 kontrollpunkter. STOPPUNKT: Väntar på lärarens godkännande på plats innan kantelement ställs upp!",
+          "signature": "Erik Svensson",
+          "completedAt": "2026-10-03 10:40",
+          "weather": "SOL",
+          "measuredValue": "-220 mm (±3 mm)",
+          "photos": [
+            {
+              "id": "ph_erik_4",
+              "capturedAt": "2026-10-03 10:42",
+              "category": "Kontrollbevis",
+              "caption": "Laseravvägning makadambädd 8 punkter",
+              "dataUrl": "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22480%22%20viewBox%3D%220%200%20640%20480%22%3E%0A%20%20%20%20%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%20%20%20%20%3ClinearGradient%20id%3D%22g_eab308%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23182234%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%230b1120%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%20%20%20%20%3Crect%20width%3D%22640%22%20height%3D%22480%22%20fill%3D%22url(%23g_eab308)%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Crect%20x%3D%2224%22%20y%3D%2224%22%20width%3D%22592%22%20height%3D%22432%22%20rx%3D%2214%22%20fill%3D%22none%22%20stroke%3D%22%23eab308%22%20stroke-width%3D%222.5%22%20stroke-dasharray%3D%226%204%22%20opacity%3D%220.6%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Ccircle%20cx%3D%22320%22%20cy%3D%22180%22%20r%3D%2250%22%20fill%3D%22%23eab308%22%20opacity%3D%220.12%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22175%22%20font-family%3D%22system-ui%2C%20-apple-system%2C%20sans-serif%22%20font-size%3D%2224%22%20font-weight%3D%22900%22%20fill%3D%22%23eab308%22%20text-anchor%3D%22middle%22%3E%F0%9F%93%B7%20F%C3%84LTDOKUMENTATION%3C%2Ftext%3E%0A%20%20%20%20%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22210%22%20font-family%3D%22system-ui%2C%20-apple-system%2C%20sans-serif%22%20font-size%3D%2218%22%20font-weight%3D%22800%22%20fill%3D%22%23ffffff%22%20text-anchor%3D%22middle%22%3EMoment%201.4%3A%20Makadamb%C3%A4dd%208%2F16%20mm%3C%2Ftext%3E%0A%20%20%20%20%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22245%22%20font-family%3D%22system-ui%2C%20-apple-system%2C%20sans-serif%22%20font-size%3D%2213%22%20font-weight%3D%22500%22%20fill%3D%22%2394a3b8%22%20text-anchor%3D%22middle%22%3ESTOPPUNKT%20%E2%80%A2%20Laseravv%C3%A4gning%3A%20-220%20mm%20(Tolerans%20%C2%B13%20mm)%3C%2Ftext%3E%0A%20%20%20%20%20%20%20%20%3Crect%20x%3D%2235%22%20y%3D%22395%22%20width%3D%22570%22%20height%3D%2250%22%20rx%3D%2210%22%20fill%3D%22%23000000%22%20opacity%3D%220.85%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Ctext%20x%3D%2255%22%20y%3D%22426%22%20font-family%3D%22ui-monospace%2C%20monospace%22%20font-size%3D%2213%22%20font-weight%3D%22900%22%20fill%3D%22%23f97316%22%3EF%C3%84LTKOLL%20KONTROLLBEVIS%3C%2Ftext%3E%0A%20%20%20%20%20%20%20%20%3Ctext%20x%3D%22585%22%20y%3D%22426%22%20font-family%3D%22ui-monospace%2C%20monospace%22%20font-size%3D%2212%22%20fill%3D%22%23ffffff%22%20text-anchor%3D%22end%22%3E2026-10-03%2010%3A42%3C%2Ftext%3E%0A%20%20%20%20%20%20%3C%2Fsvg%3E"
+            }
+          ],
+          "teacherApproved": true
+        },
+        "1.5": {
+          "momentId": "1.5",
+          "status": "RED",
+          "comment": "",
+          "signature": "",
+          "photos": []
+        },
+        "1.6": {
+          "momentId": "1.6",
+          "status": "RED",
+          "comment": "",
+          "signature": "",
+          "photos": []
+        }
+      },
+      "teacherFeedback": {
+        "overallComment": "Grymt bra schaktning och laseravvägning! Godkänd för formgjutning.",
+        "evaluatedAt": "2026-10-03 17:02",
+        "evaluatedBy": "Angfar",
+        "grade": "GODKÄND",
+        "momentNotes": {
+          "1.4": "Laserhöjden -220 mm är godkänd i fält."
+        },
+        "approvedMoments": {
+          "1.4": true
+        }
+      }
+    },
+    "proj_johan_husgrund": {
+      "id": "proj_johan_husgrund",
+      "name": "Husgrund Villa Lindholmen",
+      "projectType": "HUSGRUND",
+      "propertyDesignation": "Lindholmen 4:12",
+      "clientName": "Lindholmen Fastigheter AB",
+      "contractorName": "Johan Elev",
+      "studentId": "usr_1790594250865_0wxq",
+      "studentName": "Johan Elev",
+      "studentEmail": "johan.elev@skola.se",
+      "schoolClass": "BA24 (Bygg Åk 2)",
+      "studentGroup": "Byggprogrammet (BA)",
+      "createdAt": "2026-10-01 09:00",
+      "updatedAt": "2026-10-03 09:30",
+      "lastSyncedAt": "2026-10-03 09:30",
+      "syncEnabled": true,
+      "notes": "Praktikprojekt fältkontroll. Rördragning och dränering.",
+      "preInspectionCompleted": true,
+      "moments": {
+        "1.1": {
+          "momentId": "1.1",
+          "status": "GREEN",
+          "comment": "Utsättning kontrollerad med GPS och laser. Mått stämmer mot ritning A40-1.",
+          "signature": "Johan Elev",
+          "completedAt": "2026-10-02 11:00",
+          "weather": "MOLN",
+          "photos": [
+            {
+              "id": "ph_johan_1",
+              "capturedAt": "2026-10-02 11:05",
+              "category": "Kontrollbevis",
+              "caption": "GPS-inmätning av hörnprofiler",
+              "dataUrl": "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22480%22%20viewBox%3D%220%200%20640%20480%22%3E%0A%20%20%20%20%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%20%20%20%20%3ClinearGradient%20id%3D%22g_38bdf8%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23182234%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%230b1120%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%20%20%20%20%3Crect%20width%3D%22640%22%20height%3D%22480%22%20fill%3D%22url(%23g_38bdf8)%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Crect%20x%3D%2224%22%20y%3D%2224%22%20width%3D%22592%22%20height%3D%22432%22%20rx%3D%2214%22%20fill%3D%22none%22%20stroke%3D%22%2338bdf8%22%20stroke-width%3D%222.5%22%20stroke-dasharray%3D%226%204%22%20opacity%3D%220.6%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Ccircle%20cx%3D%22320%22%20cy%3D%22180%22%20r%3D%2250%22%20fill%3D%22%2338bdf8%22%20opacity%3D%220.12%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22175%22%20font-family%3D%22system-ui%2C%20-apple-system%2C%20sans-serif%22%20font-size%3D%2224%22%20font-weight%3D%22900%22%20fill%3D%22%2338bdf8%22%20text-anchor%3D%22middle%22%3E%F0%9F%93%B7%20F%C3%84LTDOKUMENTATION%3C%2Ftext%3E%0A%20%20%20%20%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22210%22%20font-family%3D%22system-ui%2C%20-apple-system%2C%20sans-serif%22%20font-size%3D%2218%22%20font-weight%3D%22800%22%20fill%3D%22%23ffffff%22%20text-anchor%3D%22middle%22%3EMoment%201.1%3A%20Inm%C3%A4tning%20h%C3%B6rn%3C%2Ftext%3E%0A%20%20%20%20%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22245%22%20font-family%3D%22system-ui%2C%20-apple-system%2C%20sans-serif%22%20font-size%3D%2213%22%20font-weight%3D%22500%22%20fill%3D%22%2394a3b8%22%20text-anchor%3D%22middle%22%3EH%C3%B6rnkoordinater%20verifierade%20mot%20relationsritning%3C%2Ftext%3E%0A%20%20%20%20%20%20%20%20%3Crect%20x%3D%2235%22%20y%3D%22395%22%20width%3D%22570%22%20height%3D%2250%22%20rx%3D%2210%22%20fill%3D%22%23000000%22%20opacity%3D%220.85%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Ctext%20x%3D%2255%22%20y%3D%22426%22%20font-family%3D%22ui-monospace%2C%20monospace%22%20font-size%3D%2213%22%20font-weight%3D%22900%22%20fill%3D%22%23f97316%22%3EF%C3%84LTKOLL%20KONTROLLBEVIS%3C%2Ftext%3E%0A%20%20%20%20%20%20%20%20%3Ctext%20x%3D%22585%22%20y%3D%22426%22%20font-family%3D%22ui-monospace%2C%20monospace%22%20font-size%3D%2212%22%20fill%3D%22%23ffffff%22%20text-anchor%3D%22end%22%3E2026-10-02%2011%3A05%3C%2Ftext%3E%0A%20%20%20%20%20%20%3C%2Fsvg%3E"
+            }
+          ]
+        },
+        "1.2": {
+          "momentId": "1.2",
+          "status": "GREEN",
+          "comment": "Schakt utförd. Schaktbotten stabil utan organiskt material.",
+          "signature": "Johan Elev",
+          "completedAt": "2026-10-02 14:30",
+          "weather": "MOLN",
+          "photos": [
+            {
+              "id": "ph_johan_2",
+              "capturedAt": "2026-10-02 14:35",
+              "category": "Schakt",
+              "caption": "Schaktbotten avsynad",
+              "dataUrl": "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22480%22%20viewBox%3D%220%200%20640%20480%22%3E%0A%20%20%20%20%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%20%20%20%20%3ClinearGradient%20id%3D%22g_f97316%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23182234%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%230b1120%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%20%20%20%20%3Crect%20width%3D%22640%22%20height%3D%22480%22%20fill%3D%22url(%23g_f97316)%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Crect%20x%3D%2224%22%20y%3D%2224%22%20width%3D%22592%22%20height%3D%22432%22%20rx%3D%2214%22%20fill%3D%22none%22%20stroke%3D%22%23f97316%22%20stroke-width%3D%222.5%22%20stroke-dasharray%3D%226%204%22%20opacity%3D%220.6%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Ccircle%20cx%3D%22320%22%20cy%3D%22180%22%20r%3D%2250%22%20fill%3D%22%23f97316%22%20opacity%3D%220.12%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22175%22%20font-family%3D%22system-ui%2C%20-apple-system%2C%20sans-serif%22%20font-size%3D%2224%22%20font-weight%3D%22900%22%20fill%3D%22%23f97316%22%20text-anchor%3D%22middle%22%3E%F0%9F%93%B7%20F%C3%84LTDOKUMENTATION%3C%2Ftext%3E%0A%20%20%20%20%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22210%22%20font-family%3D%22system-ui%2C%20-apple-system%2C%20sans-serif%22%20font-size%3D%2218%22%20font-weight%3D%22800%22%20fill%3D%22%23ffffff%22%20text-anchor%3D%22middle%22%3EMoment%201.2%3A%20Schaktbotten%3C%2Ftext%3E%0A%20%20%20%20%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22245%22%20font-family%3D%22system-ui%2C%20-apple-system%2C%20sans-serif%22%20font-size%3D%2213%22%20font-weight%3D%22500%22%20fill%3D%22%2394a3b8%22%20text-anchor%3D%22middle%22%3EAvsynad%20fast%20botten%20utan%20tj%C3%A4le%20eller%20vattenfickor%3C%2Ftext%3E%0A%20%20%20%20%20%20%20%20%3Crect%20x%3D%2235%22%20y%3D%22395%22%20width%3D%22570%22%20height%3D%2250%22%20rx%3D%2210%22%20fill%3D%22%23000000%22%20opacity%3D%220.85%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Ctext%20x%3D%2255%22%20y%3D%22426%22%20font-family%3D%22ui-monospace%2C%20monospace%22%20font-size%3D%2213%22%20font-weight%3D%22900%22%20fill%3D%22%23f97316%22%3EF%C3%84LTKOLL%20KONTROLLBEVIS%3C%2Ftext%3E%0A%20%20%20%20%20%20%20%20%3Ctext%20x%3D%22585%22%20y%3D%22426%22%20font-family%3D%22ui-monospace%2C%20monospace%22%20font-size%3D%2212%22%20fill%3D%22%23ffffff%22%20text-anchor%3D%22end%22%3E2026-10-02%2014%3A35%3C%2Ftext%3E%0A%20%20%20%20%20%20%3C%2Fsvg%3E"
+            }
+          ]
+        },
+        "1.5": {
+          "momentId": "1.5",
+          "status": "GREEN",
+          "comment": "Spillvattenrör 110 mm förlagda med fall 20 promille (1:50). Fall mätt med digitalt vattenpass.",
+          "signature": "Johan Elev",
+          "completedAt": "2026-10-03 09:20",
+          "weather": "SOL",
+          "measuredValue": "2.0 cm/m",
+          "photos": [
+            {
+              "id": "ph_johan_3",
+              "capturedAt": "2026-10-03 09:25",
+              "category": "VA",
+              "caption": "VA-rör med 20 promille fall kontrollerat",
+              "dataUrl": "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22480%22%20viewBox%3D%220%200%20640%20480%22%3E%0A%20%20%20%20%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%20%20%20%20%3ClinearGradient%20id%3D%22g_06b6d4%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23182234%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%230b1120%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%20%20%20%20%3Crect%20width%3D%22640%22%20height%3D%22480%22%20fill%3D%22url(%23g_06b6d4)%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Crect%20x%3D%2224%22%20y%3D%2224%22%20width%3D%22592%22%20height%3D%22432%22%20rx%3D%2214%22%20fill%3D%22none%22%20stroke%3D%22%2306b6d4%22%20stroke-width%3D%222.5%22%20stroke-dasharray%3D%226%204%22%20opacity%3D%220.6%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Ccircle%20cx%3D%22320%22%20cy%3D%22180%22%20r%3D%2250%22%20fill%3D%22%2306b6d4%22%20opacity%3D%220.12%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22175%22%20font-family%3D%22system-ui%2C%20-apple-system%2C%20sans-serif%22%20font-size%3D%2224%22%20font-weight%3D%22900%22%20fill%3D%22%2306b6d4%22%20text-anchor%3D%22middle%22%3E%F0%9F%93%B7%20F%C3%84LTDOKUMENTATION%3C%2Ftext%3E%0A%20%20%20%20%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22210%22%20font-family%3D%22system-ui%2C%20-apple-system%2C%20sans-serif%22%20font-size%3D%2218%22%20font-weight%3D%22800%22%20fill%3D%22%23ffffff%22%20text-anchor%3D%22middle%22%3EMoment%201.5%3A%20VA%20%26%20Spillvatten%20110%20mm%3C%2Ftext%3E%0A%20%20%20%20%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22245%22%20font-family%3D%22system-ui%2C%20-apple-system%2C%20sans-serif%22%20font-size%3D%2213%22%20font-weight%3D%22500%22%20fill%3D%22%2394a3b8%22%20text-anchor%3D%22middle%22%3EFallkontroll%3A%2020%20promille%20(1%3A50)%20verifierat%3C%2Ftext%3E%0A%20%20%20%20%20%20%20%20%3Crect%20x%3D%2235%22%20y%3D%22395%22%20width%3D%22570%22%20height%3D%2250%22%20rx%3D%2210%22%20fill%3D%22%23000000%22%20opacity%3D%220.85%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Ctext%20x%3D%2255%22%20y%3D%22426%22%20font-family%3D%22ui-monospace%2C%20monospace%22%20font-size%3D%2213%22%20font-weight%3D%22900%22%20fill%3D%22%23f97316%22%3EF%C3%84LTKOLL%20KONTROLLBEVIS%3C%2Ftext%3E%0A%20%20%20%20%20%20%20%20%3Ctext%20x%3D%22585%22%20y%3D%22426%22%20font-family%3D%22ui-monospace%2C%20monospace%22%20font-size%3D%2212%22%20fill%3D%22%23ffffff%22%20text-anchor%3D%22end%22%3E2026-10-03%2009%3A25%3C%2Ftext%3E%0A%20%20%20%20%20%20%3C%2Fsvg%3E"
+            }
+          ]
+        },
+        "1.6": {
+          "momentId": "1.6",
+          "status": "RED",
+          "comment": "",
+          "signature": "",
+          "photos": []
+        }
+      }
+    },
+    "proj_ny_sten": {
+      "id": "proj_ny_sten",
+      "name": "Marksten & Plattsättning Garageuppfart",
+      "projectType": "PLATTSATTNING",
+      "propertyDesignation": "Övningsbås 4, Anläggarytan",
+      "clientName": "Yrkeslärare Mark & Betong",
+      "contractorName": "Ny Elev",
+      "studentId": "usr_1790594214948_pig3",
+      "studentName": "Ny Elev",
+      "studentEmail": "ny_elev@skola.se",
+      "schoolClass": "ANL23 (Anläggare)",
+      "studentGroup": "Anläggare (Mark & Anläggning)",
+      "projectNumber": "PLATTA-2",
+      "exerciseCode": "PLATTA-2",
+      "isTeacherExercise": true,
+      "createdAt": "2026-10-02 08:00",
+      "updatedAt": "2026-10-03 11:15",
+      "lastSyncedAt": "2026-10-03 11:15",
+      "syncEnabled": true,
+      "notes": "Övning i fall och sättsand för marksten.",
+      "fieldMeasurements": {
+        "sideA": 6,
+        "sideB": 4,
+        "diagonal": 7.21,
+        "fallCmPerM": 2
+      },
+      "preInspectionCompleted": true,
+      "moments": {
+        "1.1": {
+          "momentId": "1.1",
+          "status": "GREEN",
+          "comment": "Bärlager 0/32 mm utlagt i 15 cm tjocklek och paddat med 400 kg markvibrator 6 överfarter.",
+          "signature": "Ny Elev",
+          "completedAt": "2026-10-02 13:00",
+          "weather": "SOL",
+          "photos": [
+            {
+              "id": "ph_ny_1",
+              "capturedAt": "2026-10-02 13:05",
+              "category": "Schakt",
+              "caption": "Bärlager packat och kontrollerat med rulltest",
+              "dataUrl": "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22480%22%20viewBox%3D%220%200%20640%20480%22%3E%0A%20%20%20%20%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%20%20%20%20%3ClinearGradient%20id%3D%22g_10b981%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23182234%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%230b1120%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%20%20%20%20%3Crect%20width%3D%22640%22%20height%3D%22480%22%20fill%3D%22url(%23g_10b981)%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Crect%20x%3D%2224%22%20y%3D%2224%22%20width%3D%22592%22%20height%3D%22432%22%20rx%3D%2214%22%20fill%3D%22none%22%20stroke%3D%22%2310b981%22%20stroke-width%3D%222.5%22%20stroke-dasharray%3D%226%204%22%20opacity%3D%220.6%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Ccircle%20cx%3D%22320%22%20cy%3D%22180%22%20r%3D%2250%22%20fill%3D%22%2310b981%22%20opacity%3D%220.12%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22175%22%20font-family%3D%22system-ui%2C%20-apple-system%2C%20sans-serif%22%20font-size%3D%2224%22%20font-weight%3D%22900%22%20fill%3D%22%2310b981%22%20text-anchor%3D%22middle%22%3E%F0%9F%93%B7%20F%C3%84LTDOKUMENTATION%3C%2Ftext%3E%0A%20%20%20%20%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22210%22%20font-family%3D%22system-ui%2C%20-apple-system%2C%20sans-serif%22%20font-size%3D%2218%22%20font-weight%3D%22800%22%20fill%3D%22%23ffffff%22%20text-anchor%3D%22middle%22%3EMoment%201.1%3A%20B%C3%A4rlager%200%2F32%3C%2Ftext%3E%0A%20%20%20%20%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22245%22%20font-family%3D%22system-ui%2C%20-apple-system%2C%20sans-serif%22%20font-size%3D%2213%22%20font-weight%3D%22500%22%20fill%3D%22%2394a3b8%22%20text-anchor%3D%22middle%22%3EPaddat%20med%20400%20kg%20markvibrator%20(6%20%C3%B6verfarter)%3C%2Ftext%3E%0A%20%20%20%20%20%20%20%20%3Crect%20x%3D%2235%22%20y%3D%22395%22%20width%3D%22570%22%20height%3D%2250%22%20rx%3D%2210%22%20fill%3D%22%23000000%22%20opacity%3D%220.85%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Ctext%20x%3D%2255%22%20y%3D%22426%22%20font-family%3D%22ui-monospace%2C%20monospace%22%20font-size%3D%2213%22%20font-weight%3D%22900%22%20fill%3D%22%23f97316%22%3EF%C3%84LTKOLL%20KONTROLLBEVIS%3C%2Ftext%3E%0A%20%20%20%20%20%20%20%20%3Ctext%20x%3D%22585%22%20y%3D%22426%22%20font-family%3D%22ui-monospace%2C%20monospace%22%20font-size%3D%2212%22%20fill%3D%22%23ffffff%22%20text-anchor%3D%22end%22%3E2026-10-02%2013%3A05%3C%2Ftext%3E%0A%20%20%20%20%20%20%3C%2Fsvg%3E"
+            }
+          ]
+        },
+        "1.2": {
+          "momentId": "1.2",
+          "status": "YELLOW",
+          "comment": "Sättsand 0/4 mm utlagd 30 mm och avdragen med rätskiva. Fall 2.0 cm per meter bort från husgrunden. STOPPUNKT: Väntar på att läraren inspekterar fallet innan stenläggning påbörjas!",
+          "signature": "Ny Elev",
+          "completedAt": "2026-10-03 11:10",
+          "weather": "SOL",
+          "measuredValue": "Fall 2 cm/m",
+          "photos": [
+            {
+              "id": "ph_ny_2",
+              "capturedAt": "2026-10-03 11:12",
+              "category": "Kontrollbevis",
+              "caption": "Sättsand avdragen, fall mot rännsten kontrollerat",
+              "dataUrl": "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22480%22%20viewBox%3D%220%200%20640%20480%22%3E%0A%20%20%20%20%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%20%20%20%20%3ClinearGradient%20id%3D%22g_eab308%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23182234%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%230b1120%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%20%20%20%20%3Crect%20width%3D%22640%22%20height%3D%22480%22%20fill%3D%22url(%23g_eab308)%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Crect%20x%3D%2224%22%20y%3D%2224%22%20width%3D%22592%22%20height%3D%22432%22%20rx%3D%2214%22%20fill%3D%22none%22%20stroke%3D%22%23eab308%22%20stroke-width%3D%222.5%22%20stroke-dasharray%3D%226%204%22%20opacity%3D%220.6%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Ccircle%20cx%3D%22320%22%20cy%3D%22180%22%20r%3D%2250%22%20fill%3D%22%23eab308%22%20opacity%3D%220.12%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22175%22%20font-family%3D%22system-ui%2C%20-apple-system%2C%20sans-serif%22%20font-size%3D%2224%22%20font-weight%3D%22900%22%20fill%3D%22%23eab308%22%20text-anchor%3D%22middle%22%3E%F0%9F%93%B7%20F%C3%84LTDOKUMENTATION%3C%2Ftext%3E%0A%20%20%20%20%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22210%22%20font-family%3D%22system-ui%2C%20-apple-system%2C%20sans-serif%22%20font-size%3D%2218%22%20font-weight%3D%22800%22%20fill%3D%22%23ffffff%22%20text-anchor%3D%22middle%22%3EMoment%201.2%3A%20S%C3%A4ttsand%20%26%20Fall%202%20cm%2Fm%3C%2Ftext%3E%0A%20%20%20%20%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22245%22%20font-family%3D%22system-ui%2C%20-apple-system%2C%20sans-serif%22%20font-size%3D%2213%22%20font-weight%3D%22500%22%20fill%3D%22%2394a3b8%22%20text-anchor%3D%22middle%22%3ESTOPPUNKT%20%E2%80%A2%20Avdragen%20med%20r%C3%A4tskiva%2C%20v%C3%A4ntar%20godk%C3%A4nnande%3C%2Ftext%3E%0A%20%20%20%20%20%20%20%20%3Crect%20x%3D%2235%22%20y%3D%22395%22%20width%3D%22570%22%20height%3D%2250%22%20rx%3D%2210%22%20fill%3D%22%23000000%22%20opacity%3D%220.85%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Ctext%20x%3D%2255%22%20y%3D%22426%22%20font-family%3D%22ui-monospace%2C%20monospace%22%20font-size%3D%2213%22%20font-weight%3D%22900%22%20fill%3D%22%23f97316%22%3EF%C3%84LTKOLL%20KONTROLLBEVIS%3C%2Ftext%3E%0A%20%20%20%20%20%20%20%20%3Ctext%20x%3D%22585%22%20y%3D%22426%22%20font-family%3D%22ui-monospace%2C%20monospace%22%20font-size%3D%2212%22%20fill%3D%22%23ffffff%22%20text-anchor%3D%22end%22%3E2026-10-03%2011%3A12%3C%2Ftext%3E%0A%20%20%20%20%20%20%3C%2Fsvg%3E"
+            }
+          ]
+        },
+        "1.3": {
+          "momentId": "1.3",
+          "status": "RED",
+          "comment": "",
+          "signature": "",
+          "photos": []
+        }
+      }
+    },
+    "proj_elev1_altan": {
+      "id": "proj_elev1_altan",
+      "name": "Trädäck & Altan 35 kvm",
+      "projectType": "ALTAN_TRADACK",
+      "propertyDesignation": "Skolans övningsgård",
+      "clientName": "Yrkeslärare Trä",
+      "contractorName": "Elev / Lärling",
+      "studentId": "usr_elev_1",
+      "studentName": "Elev / Lärling",
+      "studentEmail": "elev@skola.se",
+      "schoolClass": "BA25 (Bygg Åk 1)",
+      "studentGroup": "Byggprogrammet (BA)",
+      "createdAt": "2026-10-01 10:00",
+      "updatedAt": "2026-10-02 15:45",
+      "lastSyncedAt": "2026-10-02 15:45",
+      "syncEnabled": true,
+      "notes": "Altanbygge med plintar och bärlina 45x170 mm.",
+      "preInspectionCompleted": true,
+      "moments": {
+        "1.1": {
+          "momentId": "1.1",
+          "status": "GREEN",
+          "comment": "Betongplintar med justerbara stolpskor gjutna på frostfritt djup 80 cm.",
+          "signature": "Elev / Lärling",
+          "completedAt": "2026-10-01 14:00",
+          "weather": "SOL",
+          "photos": [
+            {
+              "id": "ph_elev1_1",
+              "capturedAt": "2026-10-01 14:10",
+              "category": "Grund",
+              "caption": "Plintar i lod och våg",
+              "dataUrl": "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22480%22%20viewBox%3D%220%200%20640%20480%22%3E%0A%20%20%20%20%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%20%20%20%20%3ClinearGradient%20id%3D%22g_3b82f6%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23182234%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%230b1120%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%20%20%20%20%3Crect%20width%3D%22640%22%20height%3D%22480%22%20fill%3D%22url(%23g_3b82f6)%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Crect%20x%3D%2224%22%20y%3D%2224%22%20width%3D%22592%22%20height%3D%22432%22%20rx%3D%2214%22%20fill%3D%22none%22%20stroke%3D%22%233b82f6%22%20stroke-width%3D%222.5%22%20stroke-dasharray%3D%226%204%22%20opacity%3D%220.6%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Ccircle%20cx%3D%22320%22%20cy%3D%22180%22%20r%3D%2250%22%20fill%3D%22%233b82f6%22%20opacity%3D%220.12%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22175%22%20font-family%3D%22system-ui%2C%20-apple-system%2C%20sans-serif%22%20font-size%3D%2224%22%20font-weight%3D%22900%22%20fill%3D%22%233b82f6%22%20text-anchor%3D%22middle%22%3E%F0%9F%93%B7%20F%C3%84LTDOKUMENTATION%3C%2Ftext%3E%0A%20%20%20%20%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22210%22%20font-family%3D%22system-ui%2C%20-apple-system%2C%20sans-serif%22%20font-size%3D%2218%22%20font-weight%3D%22800%22%20fill%3D%22%23ffffff%22%20text-anchor%3D%22middle%22%3EMoment%201.1%3A%20Plintar%20%26%20Grundl%C3%A4ggning%3C%2Ftext%3E%0A%20%20%20%20%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22245%22%20font-family%3D%22system-ui%2C%20-apple-system%2C%20sans-serif%22%20font-size%3D%2213%22%20font-weight%3D%22500%22%20fill%3D%22%2394a3b8%22%20text-anchor%3D%22middle%22%3EGjutna%20plintar%20p%C3%A5%20frostfritt%20djup%20med%20stolpskor%3C%2Ftext%3E%0A%20%20%20%20%20%20%20%20%3Crect%20x%3D%2235%22%20y%3D%22395%22%20width%3D%22570%22%20height%3D%2250%22%20rx%3D%2210%22%20fill%3D%22%23000000%22%20opacity%3D%220.85%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Ctext%20x%3D%2255%22%20y%3D%22426%22%20font-family%3D%22ui-monospace%2C%20monospace%22%20font-size%3D%2213%22%20font-weight%3D%22900%22%20fill%3D%22%23f97316%22%3EF%C3%84LTKOLL%20KONTROLLBEVIS%3C%2Ftext%3E%0A%20%20%20%20%20%20%20%20%3Ctext%20x%3D%22585%22%20y%3D%22426%22%20font-family%3D%22ui-monospace%2C%20monospace%22%20font-size%3D%2212%22%20fill%3D%22%23ffffff%22%20text-anchor%3D%22end%22%3E2026-10-01%2014%3A10%3C%2Ftext%3E%0A%20%20%20%20%20%20%3C%2Fsvg%3E"
+            }
+          ]
+        },
+        "1.2": {
+          "momentId": "1.2",
+          "status": "GREEN",
+          "comment": "Bärlina 45x170 mm monterad i våg med laser. Förankrad med fransk träskruv.",
+          "signature": "Elev / Lärling",
+          "completedAt": "2026-10-02 11:30",
+          "weather": "SOL",
+          "photos": [
+            {
+              "id": "ph_elev1_2",
+              "capturedAt": "2026-10-02 11:35",
+              "category": "Grund",
+              "caption": "Bärlina kontrollerad med vattenpass",
+              "dataUrl": "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22480%22%20viewBox%3D%220%200%20640%20480%22%3E%0A%20%20%20%20%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%20%20%20%20%3ClinearGradient%20id%3D%22g_10b981%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23182234%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%230b1120%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%20%20%20%20%3Crect%20width%3D%22640%22%20height%3D%22480%22%20fill%3D%22url(%23g_10b981)%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Crect%20x%3D%2224%22%20y%3D%2224%22%20width%3D%22592%22%20height%3D%22432%22%20rx%3D%2214%22%20fill%3D%22none%22%20stroke%3D%22%2310b981%22%20stroke-width%3D%222.5%22%20stroke-dasharray%3D%226%204%22%20opacity%3D%220.6%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Ccircle%20cx%3D%22320%22%20cy%3D%22180%22%20r%3D%2250%22%20fill%3D%22%2310b981%22%20opacity%3D%220.12%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22175%22%20font-family%3D%22system-ui%2C%20-apple-system%2C%20sans-serif%22%20font-size%3D%2224%22%20font-weight%3D%22900%22%20fill%3D%22%2310b981%22%20text-anchor%3D%22middle%22%3E%F0%9F%93%B7%20F%C3%84LTDOKUMENTATION%3C%2Ftext%3E%0A%20%20%20%20%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22210%22%20font-family%3D%22system-ui%2C%20-apple-system%2C%20sans-serif%22%20font-size%3D%2218%22%20font-weight%3D%22800%22%20fill%3D%22%23ffffff%22%20text-anchor%3D%22middle%22%3EMoment%201.2%3A%20B%C3%A4rlina%2045x170%3C%2Ftext%3E%0A%20%20%20%20%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22245%22%20font-family%3D%22system-ui%2C%20-apple-system%2C%20sans-serif%22%20font-size%3D%2213%22%20font-weight%3D%22500%22%20fill%3D%22%2394a3b8%22%20text-anchor%3D%22middle%22%3EMonterad%20i%20v%C3%A5g%20och%20f%C3%A4st%20mot%20plintar%3C%2Ftext%3E%0A%20%20%20%20%20%20%20%20%3Crect%20x%3D%2235%22%20y%3D%22395%22%20width%3D%22570%22%20height%3D%2250%22%20rx%3D%2210%22%20fill%3D%22%23000000%22%20opacity%3D%220.85%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Ctext%20x%3D%2255%22%20y%3D%22426%22%20font-family%3D%22ui-monospace%2C%20monospace%22%20font-size%3D%2213%22%20font-weight%3D%22900%22%20fill%3D%22%23f97316%22%3EF%C3%84LTKOLL%20KONTROLLBEVIS%3C%2Ftext%3E%0A%20%20%20%20%20%20%20%20%3Ctext%20x%3D%22585%22%20y%3D%22426%22%20font-family%3D%22ui-monospace%2C%20monospace%22%20font-size%3D%2212%22%20fill%3D%22%23ffffff%22%20text-anchor%3D%22end%22%3E2026-10-02%2011%3A35%3C%2Ftext%3E%0A%20%20%20%20%20%20%3C%2Fsvg%3E"
+            }
+          ]
+        },
+        "1.3": {
+          "momentId": "1.3",
+          "status": "GREEN",
+          "comment": "Golvbjälkar c/c 600 mm monterade med balkskor och ankarspik.",
+          "signature": "Elev / Lärling",
+          "completedAt": "2026-10-02 15:30",
+          "weather": "SOL",
+          "photos": [
+            {
+              "id": "ph_elev1_3",
+              "capturedAt": "2026-10-02 15:40",
+              "category": "Kontrollbevis",
+              "caption": "Bjälklag c/c 60 cm monterat",
+              "dataUrl": "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22480%22%20viewBox%3D%220%200%20640%20480%22%3E%0A%20%20%20%20%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%20%20%20%20%3ClinearGradient%20id%3D%22g_38bdf8%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23182234%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%230b1120%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%20%20%20%20%3Crect%20width%3D%22640%22%20height%3D%22480%22%20fill%3D%22url(%23g_38bdf8)%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Crect%20x%3D%2224%22%20y%3D%2224%22%20width%3D%22592%22%20height%3D%22432%22%20rx%3D%2214%22%20fill%3D%22none%22%20stroke%3D%22%2338bdf8%22%20stroke-width%3D%222.5%22%20stroke-dasharray%3D%226%204%22%20opacity%3D%220.6%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Ccircle%20cx%3D%22320%22%20cy%3D%22180%22%20r%3D%2250%22%20fill%3D%22%2338bdf8%22%20opacity%3D%220.12%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22175%22%20font-family%3D%22system-ui%2C%20-apple-system%2C%20sans-serif%22%20font-size%3D%2224%22%20font-weight%3D%22900%22%20fill%3D%22%2338bdf8%22%20text-anchor%3D%22middle%22%3E%F0%9F%93%B7%20F%C3%84LTDOKUMENTATION%3C%2Ftext%3E%0A%20%20%20%20%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22210%22%20font-family%3D%22system-ui%2C%20-apple-system%2C%20sans-serif%22%20font-size%3D%2218%22%20font-weight%3D%22800%22%20fill%3D%22%23ffffff%22%20text-anchor%3D%22middle%22%3EMoment%201.3%3A%20Bj%C3%A4lklag%20c%2Fc%20600%20mm%3C%2Ftext%3E%0A%20%20%20%20%20%20%20%20%3Ctext%20x%3D%22320%22%20y%3D%22245%22%20font-family%3D%22system-ui%2C%20-apple-system%2C%20sans-serif%22%20font-size%3D%2213%22%20font-weight%3D%22500%22%20fill%3D%22%2394a3b8%22%20text-anchor%3D%22middle%22%3EAlla%20fack%20m%C3%A4tta%20till%20600%20mm%20c%2Fc%3C%2Ftext%3E%0A%20%20%20%20%20%20%20%20%3Crect%20x%3D%2235%22%20y%3D%22395%22%20width%3D%22570%22%20height%3D%2250%22%20rx%3D%2210%22%20fill%3D%22%23000000%22%20opacity%3D%220.85%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Ctext%20x%3D%2255%22%20y%3D%22426%22%20font-family%3D%22ui-monospace%2C%20monospace%22%20font-size%3D%2213%22%20font-weight%3D%22900%22%20fill%3D%22%23f97316%22%3EF%C3%84LTKOLL%20KONTROLLBEVIS%3C%2Ftext%3E%0A%20%20%20%20%20%20%20%20%3Ctext%20x%3D%22585%22%20y%3D%22426%22%20font-family%3D%22ui-monospace%2C%20monospace%22%20font-size%3D%2212%22%20fill%3D%22%23ffffff%22%20text-anchor%3D%22end%22%3E2026-10-02%2015%3A40%3C%2Ftext%3E%0A%20%20%20%20%20%20%3C%2Fsvg%3E"
+            }
+          ]
+        }
+      }
+    },
+    "proj_local_test_1": {
+      "id": "proj_local_test_1",
+      "name": "Lokalt testarbete",
+      "projectType": "ALTAN_TRADACK",
+      "studentName": "Test Elev",
+      "schoolClass": "BA24 (Bygg Åk 2)",
+      "moments": {},
+      "lastSyncedAt": "2026-10-03 17:03",
+      "updatedAt": "2026-10-03 17:03"
+    }
+  },
+  "settings": {
+    "requireLoginOnStartup": false
+  },
+  "adminSettings": {
+    "allowTeacherCreateTeacherAccounts": false,
+    "schoolName": "Bygg- & Anläggningsutbildning"
+  },
+  "exercises": [],
+  "inviteCodes": [],
+  "emailWhitelist": [
+    {
+      "id": "wl_email_robbin",
+      "pattern": "robbinwannstrom@gmail.com",
+      "type": "EXACT_EMAIL",
+      "addedBy": "System",
+      "addedAt": "2026-01-01",
+      "description": "Huvudadministratör & ägare"
+    },
+    {
+      "id": "wl_email_admin",
+      "pattern": "admin@faltkoll.se",
+      "type": "EXACT_EMAIL",
+      "addedBy": "System",
+      "addedAt": "2026-01-01",
+      "description": "Huvudadministratör"
+    }
+  ],
+  "registrationSecurity": {
+    "requireInviteCodeOrWhitelist": true
+  }
+}
