@@ -1311,198 +1311,661 @@ app.post('/api/exercises/import-pdf', async (req, res) => {
     uploadedAt: now,
   };
 
-  // Helper fallback when Gemini is not configured or in case of error
-  const generateFallbackExercise = (reason?: string) => {
-    const lowerName = cleanName.toLowerCase();
-    let projectType: 'HUSGRUND' | 'PLATTSATTNING' | 'ALTAN_TRADACK' | 'ENSKILT_AVLOPP' = 'HUSGRUND';
-    let title = cleanName.replace(/\.[^/.]+$/, '').replace(/[_-]/g, ' ');
-    title = title.charAt(0).toUpperCase() + title.slice(1);
+  // Decode text if textContent is provided or if file is .txt/.text/.md
+  const isTextFile =
+    cleanName.toLowerCase().endsWith('.txt') ||
+    cleanName.toLowerCase().endsWith('.text') ||
+    cleanName.toLowerCase().endsWith('.md') ||
+    (typeof pdfBase64 === 'string' && pdfBase64.startsWith('data:text/'));
 
-    if (lowerName.includes('sten') || lowerName.includes('platta') || lowerName.includes('marksten')) {
-      projectType = 'PLATTSATTNING';
-      if (!title.toLowerCase().includes('sten')) title = `Övning: ${title} (Plattsättning)`;
-    } else if (lowerName.includes('altan') || lowerName.includes('trall') || lowerName.includes('däck')) {
-      projectType = 'ALTAN_TRADACK';
-      if (!title.toLowerCase().includes('altan')) title = `Övning: ${title} (Trädäck & Altan)`;
-    } else if (lowerName.includes('avlopp') || lowerName.includes('va') || lowerName.includes('infiltr')) {
-      projectType = 'ENSKILT_AVLOPP';
-      if (!title.toLowerCase().includes('avlopp')) title = `Övning: ${title} (Enskilt Avlopp & VA)`;
-    } else {
-      projectType = 'HUSGRUND';
-      if (!title.toLowerCase().includes('grund') && !title.toLowerCase().includes('schakt')) {
-        title = `Övning: ${title} (Schakt & Grundläggning)`;
+  let extractedDocText = typeof req.body.textContent === 'string' ? req.body.textContent.trim() : '';
+
+  if (!extractedDocText && isTextFile && pdfBase64) {
+    try {
+      const raw = pdfBase64.includes(',') ? pdfBase64.split(',')[1] : pdfBase64;
+      extractedDocText = Buffer.from(raw, 'base64').toString('utf-8').trim();
+    } catch {}
+  }
+
+  // Detect project type based on filename AND text content
+  const combinedSearchText = `${cleanName} ${extractedDocText}`.toLowerCase();
+  let projectType: 'HUSGRUND' | 'PLATTSATTNING' | 'ALTAN_TRADACK' | 'ENSKILT_AVLOPP' = 'HUSGRUND';
+
+  if (
+    combinedSearchText.includes('avlopp') ||
+    combinedSearchText.includes('slamavskilj') ||
+    combinedSearchText.includes('infiltr') ||
+    combinedSearchText.includes('markbädd') ||
+    combinedSearchText.includes('trekammar') ||
+    combinedSearchText.includes('provgrop') ||
+    combinedSearchText.includes('fördelningsbrunn') ||
+    combinedSearchText.includes('bdt')
+  ) {
+    projectType = 'ENSKILT_AVLOPP';
+  } else if (
+    combinedSearchText.includes('sten') ||
+    combinedSearchText.includes('platta') ||
+    combinedSearchText.includes('marksten') ||
+    combinedSearchText.includes('kantsten') ||
+    combinedSearchText.includes('fog') ||
+    combinedSearchText.includes('asfalt')
+  ) {
+    projectType = 'PLATTSATTNING';
+  } else if (
+    combinedSearchText.includes('altan') ||
+    combinedSearchText.includes('trall') ||
+    combinedSearchText.includes('däck') ||
+    combinedSearchText.includes('plint') ||
+    combinedSearchText.includes('bärlina')
+  ) {
+    projectType = 'ALTAN_TRADACK';
+  } else {
+    projectType = 'HUSGRUND';
+  }
+
+  // Domain-specific fallback generator that strictly matches the topic and extracts any text lines if available
+  const generateDomainFallbackExercise = () => {
+    let cleanTitle = cleanName.replace(/\.[^/.]+$/, '').replace(/[_-]/g, ' ');
+    cleanTitle = cleanTitle.charAt(0).toUpperCase() + cleanTitle.slice(1);
+
+    // If text was provided in the document, parse steps STRICTLY from the text!
+    const rawLines = extractedDocText
+      .split(/\r?\n/)
+      .map((l: string) => l.trim())
+      .filter((l: string) => l.length > 0);
+
+    let moments: any[] = [];
+
+    if (rawLines.length > 0) {
+      if (rawLines[0].length < 75 && !/^(\d+[\.:\)\-]|[-*•–])\s*/.test(rawLines[0])) {
+        cleanTitle = rawLines[0].replace(/^#+\s*/, '').trim();
       }
+
+      interface DetectedStepItem {
+        title: string;
+        details: string;
+        amaCode?: string;
+        tolerance?: string;
+        isStopPoint?: boolean;
+      }
+
+      const detectedItems: DetectedStepItem[] = [];
+      const stepRegex = /^(steg|moment|fas|del|punkt|fråga|kontrollmoment|\d+[\.:\)\-]|[a-z][\.\)])\s+/i;
+      const bulletRegex = /^[-*•–]\s+/;
+
+      let currentItem: DetectedStepItem | null = null;
+
+      for (const line of rawLines) {
+        if (line === cleanTitle || line.startsWith('# ')) continue;
+
+        const isStepHeader = stepRegex.test(line);
+        const isBullet = bulletRegex.test(line);
+
+        if (isStepHeader || (isBullet && !currentItem)) {
+          if (currentItem) detectedItems.push(currentItem);
+          const cleaned = line.replace(stepRegex, '').replace(bulletRegex, '').trim();
+          const stopPointMatch = /stoppunkt|besikt|lärare|godkänn|får ej täckas|kritiskt/i.test(line);
+          const amaMatch = line.match(/\b([A-Z]{3}(?:\.\d+)?)\b/);
+          const tolMatch = line.match(/(?:tolerans|krav|fall)?\s*(?:[±\+]\s*\d+\s*mm|\d+[-–]\d+\s*promille|\d+\s*cm\/m)/i);
+
+          currentItem = {
+            title: cleaned.length > 60 ? cleaned.substring(0, 57) + '...' : cleaned || 'Kontrollmoment',
+            details: cleaned,
+            amaCode: amaMatch ? amaMatch[1] : undefined,
+            tolerance: tolMatch ? tolMatch[0].trim() : undefined,
+            isStopPoint: stopPointMatch,
+          };
+        } else if (currentItem) {
+          currentItem.details += ' ' + line;
+          if (!currentItem.isStopPoint && /stoppunkt|besikt|lärare|godkänn/i.test(line)) {
+            currentItem.isStopPoint = true;
+          }
+          if (!currentItem.tolerance) {
+            const tol = line.match(/(?:tolerans|krav|fall)?\s*(?:[±\+]\s*\d+\s*mm|\d+[-–]\d+\s*promille|\d+\s*cm\/m)/i);
+            if (tol) currentItem.tolerance = tol[0].trim();
+          }
+          if (!currentItem.amaCode) {
+            const ama = line.match(/\b([A-Z]{3}(?:\.\d+)?)\b/);
+            if (ama) currentItem.amaCode = ama[1];
+          }
+        } else if (line.length > 6) {
+          currentItem = {
+            title: line.length > 60 ? line.substring(0, 57) + '...' : line,
+            details: line,
+            isStopPoint: /stoppunkt|besikt|lärare|godkänn/i.test(line),
+          };
+        }
+      }
+
+      if (currentItem) detectedItems.push(currentItem);
+
+      const defaultAma =
+        projectType === 'ENSKILT_AVLOPP'
+          ? 'PBB.1'
+          : projectType === 'PLATTSATTNING'
+          ? 'DEF.1'
+          : projectType === 'ALTAN_TRADACK'
+          ? 'HSD.3'
+          : 'CBB.1';
+
+      const defaultTol =
+        projectType === 'ENSKILT_AVLOPP'
+          ? 'Fall 10-20 promille'
+          : projectType === 'PLATTSATTNING'
+          ? '±3 mm'
+          : '±5 mm';
+
+      const itemsToBuild =
+        detectedItems.length > 0
+          ? detectedItems
+          : [{ title: cleanTitle, details: `Utför arbete enligt underlag (${cleanName}).`, isStopPoint: false }];
+
+      moments = itemsToBuild.map((item, idx) => {
+        const stepNum = idx + 1;
+        const total = itemsToBuild.length;
+        const phaseNum =
+          total <= 3 ? 1 : stepNum <= Math.ceil(total / 3) ? 1 : stepNum <= Math.ceil((total * 2) / 3) ? 2 : 3;
+        const phaseTitle =
+          phaseNum === 1
+            ? 'Fas 1: Förberedelse & Underlag'
+            : phaseNum === 2
+            ? 'Fas 2: Utförande & Förläggning'
+            : 'Fas 3: Slutkontroll & Avstämning';
+
+        return {
+          id: `${phaseNum}.${stepNum}`,
+          order: stepNum,
+          phaseNumber: phaseNum,
+          phaseName: phaseTitle,
+          title: item.title,
+          amaCode: item.amaCode || defaultAma,
+          instruction: item.details || `Utför och kontrollera ${item.title} enligt bifogat underlag (${cleanName}).`,
+          studentTip: 'Följ underlagets instruktioner noggrant och rådgör med yrkesläraren vid oklarheter.',
+          proTip: 'Dokumentera utförandet med tidsstämplat foto och måttreferens.',
+          tolerance: item.tolerance || defaultTol,
+          inspectionItem: item.title,
+          method: 'Visuell kontroll, måttband och mätinstrument',
+          requirePhoto: true,
+          isStopPoint: item.isStopPoint ?? (stepNum === total),
+          customChecklist: [
+            'Arbetet utfört i enlighet med underlaget',
+            'Tolerans och måttgränser verifierade',
+            'Fotobevis taget med tydlig referens',
+          ],
+        };
+      });
+    } else if (projectType === 'ENSKILT_AVLOPP') {
+      // 100% Genuine Enskilt Avlopp & Infiltration moments
+      if (!cleanTitle.toLowerCase().includes('avlopp')) {
+        cleanTitle = `Övning: ${cleanTitle} (Enskilt Avlopp & VA)`;
+      }
+
+      moments = [
+        {
+          id: '1.1',
+          order: 1,
+          phaseNumber: 1,
+          phaseName: 'Fas 1: Förundersökning & Provgrop',
+          title: 'Provgrop, grundvattenyta & markförhållanden',
+          amaCode: 'CBE.1',
+          instruction: 'Undersök provgropen. Verifiera avstånd från infiltrationsbäddens schaktbotten ner till högsta grundvattenyta och fast berg (minst 1,0 meter skyddsavstånd enligt Havs- och vattenmyndighetens allmänna råd).',
+          studentTip: 'Mät noggrant med laser eller mätsticka ner till grundvattenrör eller fuktgräns. Är marken för tät (lera) krävs markbädd med tät botten istället för infiltration.',
+          proTip: 'Dokumentera markprofilen med foto och måttstock. Kommunens miljöinspektör kräver ofta fotobevis på provgropen.',
+          tolerance: 'Minst 1,0 m skyddsavstånd till grundvatten/berg',
+          inspectionItem: 'Skyddsavstånd till grundvatten & berg',
+          method: 'Rotationslaser & Jordprovsbedömning',
+          requirePhoto: true,
+          isStopPoint: true, // STOPPUNKT: Provgrop ska godkännas före schaktning
+          customChecklist: [
+            'Provgrop grävd till rätt djup (minst 2-2,5 m)',
+            'Avstånd till grundvattenyta / berg kontrollerat (minst 1 m)',
+            'Jordart bedömd (grus, sand, morän eller lera)',
+          ],
+        },
+        {
+          id: '1.2',
+          order: 2,
+          phaseNumber: 1,
+          phaseName: 'Fas 1: Schakt & Bäddning',
+          title: 'Schakt för slamavskiljare & ledningsgrav',
+          amaCode: 'CBB.1',
+          instruction: 'Schakta för slamavskiljaren med rätt släntlutning och säkerhetsmarginal. Schakta ledningsgrav med fall bort mot tanken. Lägg en 10-15 cm tjock bädd av sättsand/stenfritt grus på schaktbotten.',
+          studentTip: 'Schaktbotten ska vara helt plan och fri från stora vassa stenar som kan trycka hål på tanken.',
+          proTip: 'Väg av bädden med laser så tanken står i absolut våg. Lutar tanken fungerar inte slamavskiljningen optimalt.',
+          tolerance: 'Höjd ±15 mm, Bäddplanhet i våg',
+          inspectionItem: 'Schaktdjup & Bäddning för tank',
+          method: 'Rotationslaser med avvägningsstång',
+          requirePhoto: true,
+          isStopPoint: false,
+          customChecklist: [
+            'Schakt utförd med stabila slänter',
+            'Stenfritt bäddmaterial (sand/finmakadam) utlagt och packat',
+            'Höjdfix mot fastighetens utlopp kontrollerad',
+          ],
+        },
+        {
+          id: '2.1',
+          order: 3,
+          phaseNumber: 2,
+          phaseName: 'Fas 2: Tankmontering & Ledningar',
+          title: 'Placering, vattenfyllning & förankring av slamavskiljare',
+          amaCode: 'PBB.1',
+          instruction: 'Sänk ner slamavskiljaren på sandbädden. Fyll tanken med vatten samtidigt som återfyllning sker runt om i lager om 20-30 cm för att motverka deformation och sättningar. Montera förankringsband vid högt grundvatten.',
+          studentTip: 'Fyll ALLTID vatten i tanken innan du återfyller med jord/grus! Annars kan marktrycket krossa tanken.',
+          proTip: 'Se till att T-rören på in- och utlopp sitter på rätt höjd och att skiljeväggarna är intakta.',
+          tolerance: 'I våg ±5 mm, Inlopp högre än utlopp',
+          inspectionItem: 'Tankens planhet, vattenfyllning & förankring',
+          method: 'Vattenpass & Visuell inspektion',
+          requirePhoto: true,
+          isStopPoint: true, // STOPPUNKT: Tankens nivå och vattenfyllning måste godkännas
+          customChecklist: [
+            'Tank placerad i våg i båda riktningar',
+            'Vattenfylld parallellt med skonsam återfyllning',
+            'Förankringsband eller betongbalkar monterade mot uppflytning',
+          ],
+        },
+        {
+          id: '2.2',
+          order: 4,
+          phaseNumber: 2,
+          phaseName: 'Fas 2: Tankmontering & Ledningar',
+          title: 'Självfallsledning från fastighet & anslutningar',
+          amaCode: 'PBB.1',
+          instruction: 'Montera markavloppsrör (110 mm PVC/PP SN8) från huset till tanken. Upprätthåll ett jämnt fall på 10-20 promille (1-2 cm per meter). Montera rensbrunn vid riktningsändringar.',
+          studentTip: 'Mät fallet på varje enskild rörlängd. Svackor gör att papper och fekalier fastnar och bildar stopp.',
+          proTip: 'Rengör rörändar och muffar noga och använd glidmedel. Tryck in röret helt och dra tillbaka 1 cm för temperaturrörelser.',
+          tolerance: 'Fall 10-20 promille (1:100 till 1:50)',
+          inspectionItem: 'Rörfall & Muffanslutningar',
+          method: 'Digitalt vattenpass / Laser',
+          requirePhoto: true,
+          isStopPoint: false,
+          customChecklist: [
+            'Rätt rörklass (SN8) för markförläggning',
+            'Jämnt fall utan svackor (1-2 cm/m)',
+            'Muffar smorda och korrekt sammanfogade',
+          ],
+        },
+        {
+          id: '3.1',
+          order: 5,
+          phaseNumber: 3,
+          phaseName: 'Fas 3: Infiltration & Slutbesiktning',
+          title: 'Fördelningsbrunn, spridningsledningar & luftning',
+          amaCode: 'PBB.51',
+          instruction: 'Montera fördelningsbrunn med ställbara dämme i våg. Lägg spridningsrör med slitsarna nedåt på tvättad makadam (16/32 mm) med 5-10 promille fall. Montera luftningsrör i ändarna.',
+          studentTip: 'Dämmena i fördelningsbrunnen måste stå i absolut våg så att vattnet fördelas jämnt mellan alla spridarsträngar.',
+          proTip: 'Använd spridningsplattor under rören om underlaget är mjukt, och se till att luftningsrören sticker upp minst 0,5 m över mark med ventilationshuv.',
+          tolerance: 'Spridningsfall 5-10 promille, Dämme i våg ±2 mm',
+          inspectionItem: 'Dämmenivå, rörlutning & luftningshattar',
+          method: 'Vattenpass, mätband & rotationslaser',
+          requirePhoto: true,
+          isStopPoint: true, // STOPPUNKT: Får absolut ej täckas med duk/jord före inspektion!
+          customChecklist: [
+            'Fördelningsbrunn i absolut våg',
+            'Spridningsledningar lagda med 5-10 promille fall på tvättad makadam',
+            'Luftningsrör monterade i änden av varje ledning',
+          ],
+        },
+        {
+          id: '3.2',
+          order: 6,
+          phaseNumber: 3,
+          phaseName: 'Fas 3: Infiltration & Slutbesiktning',
+          title: 'Geotextil (fiberduk), återfyllning & egenkontrollintyg',
+          amaCode: 'YJJ.1',
+          instruction: 'Lägg geotextil (fiberduk bruksklass N2) ovanpå makadamen så att jord inte tränger ner i bärlagret. Återfyll försiktigt med matjord. Slutför egenkontrollprotokollet med fotobevis.',
+          studentTip: 'Duken ska täcka hela makadambädden och gå upp mot schaktkanterna så att finjord inte spolas ner i makadamen vid regn.',
+          proTip: 'Ta översiktsbilder av hela bädden innan duken läggs på. Dessa bilder är obligatoriska för slutbesiktningen hos kommunen.',
+          tolerance: 'Fullständig täckning med duk, 30 cm överlapp',
+          inspectionItem: 'Geotextiltäckning & Egenkontrollprotokoll',
+          method: 'Visuell inspektion & Fotodokumentation',
+          requirePhoto: true,
+          isStopPoint: false,
+          customChecklist: [
+            'Fiberduk N2 lagd över hela makadambädden med överlapp',
+            'Skonsam återfyllning utan tunga maskiner direkt på bädden',
+            'Fotobevis tagna på alla delmoment och intyg signerat',
+          ],
+        },
+      ];
+    } else if (projectType === 'PLATTSATTNING') {
+      if (!cleanTitle.toLowerCase().includes('sten') && !cleanTitle.toLowerCase().includes('platta')) {
+        cleanTitle = `Övning: ${cleanTitle} (Plattsättning & Marksten)`;
+      }
+
+      moments = [
+        {
+          id: '1.1',
+          order: 1,
+          phaseNumber: 1,
+          phaseName: 'Fas 1: Underarbete & Bärlager',
+          title: 'Schaktbotten, fiberduk & bärlager 0/32 mm',
+          amaCode: 'DCB.1',
+          instruction: 'Schakta bort matjord till bärkraftig botten. Lägg geotextil N2. Lägg ut bärlagerkross 0/32 mm och packa med markvibrator.',
+          studentTip: 'Packa i lager om max 15 cm. Vattna gärna bärlagret lätt vid packning.',
+          proTip: 'Bärlagret bestämmer slutresultatet. En dåligt packad yta sätter sig och ger gropar efter första vintern.',
+          tolerance: 'Höjd ±10 mm, Packningsgrad 95% Proctordensitet',
+          inspectionItem: 'Bärlagertjocklek & Packning',
+          method: 'Rotationslaser & Markvibrator',
+          requirePhoto: true,
+          isStopPoint: false,
+          customChecklist: ['Fiberduk lagd', 'Bärlager utlagt och packat med 4-6 överfarter', 'Fall avvägt bort från fasad'],
+        },
+        {
+          id: '1.2',
+          order: 2,
+          phaseNumber: 1,
+          phaseName: 'Fas 1: Sättsand & Avdragning',
+          title: 'Sättsand / Stenflis 30 mm & avdragsbanor',
+          amaCode: 'DCB.2',
+          instruction: 'Lägg ut avdragsrör i våg med 20 promille fall bort från huset. Lägg ut 30 mm sättsand (0/4 eller flis 2/4 mm) och dra av med rätskiva.',
+          studentTip: 'Gå ALDRIG på den avdragna sättsanden! Arbeta baklänges och lyft bort rören efter hand.',
+          proTip: 'Håll sättsandslagret jämnt tjockt (ca 30 mm). Varierande tjocklek ger ojämn sättning vid vibrering.',
+          tolerance: 'Tjocklek 30 ±5 mm, Fall 20 promille (2 cm/m)',
+          inspectionItem: 'Sättbäddens tjocklek & jämnhet',
+          method: 'Avdragsrör & Rätskiva',
+          requirePhoto: true,
+          isStopPoint: true,
+          customChecklist: ['Avdragsbanor injusterade med laser', 'Yta avdragen jämn och fin', 'Rörspår försiktigt ifyllda'],
+        },
+        {
+          id: '2.1',
+          order: 3,
+          phaseNumber: 2,
+          phaseName: 'Fas 2: Stenläggning & Kantsäkring',
+          title: 'Läggning av marksten/plattor med snörslå & fog',
+          amaCode: 'DEF.1',
+          instruction: 'Spänn murarsnöre för räta linjer och 90 graders vinkel. Lägg stenarna med 3 mm fogbredd. Kontrollera linjer löpande.',
+          studentTip: 'Blanda stenar från flera pallar samtidigt för att undvika färgskiftningar i ytan.',
+          proTip: 'Kläm inte stenarna kant mot kant – fogen måste ta upp rörelser och fyllas med fogsand.',
+          tolerance: 'Fogbredd 3 ±1 mm, Raka foglinjer ±3 mm per 10 m',
+          inspectionItem: 'Fogbredd, linjerakhet & fogsprång',
+          method: 'Rätskiva, snörslå & fogsprångsmätare',
+          requirePhoto: true,
+          isStopPoint: false,
+          customChecklist: ['Snöre spänt för referenslinje', 'Stenar lagda med jämn fog', 'Fogsprång mindre än 2 mm mellan stenar'],
+        },
+        {
+          id: '2.2',
+          order: 4,
+          phaseNumber: 2,
+          phaseName: 'Fas 2: Stenläggning & Kantsäkring',
+          title: 'Tillskärning & betongkantsäkring',
+          amaCode: 'DEG.1',
+          instruction: 'Kapa passbitar med stensax eller våt-kap. Skapa fastgjuten kantsäkring i betong längs alla ytterkanter som inte gränsar mot mur.',
+          studentTip: 'Använd hörselskydd och skyddsglasögon vid kapning. Undvik passbitar mindre än en halv sten.',
+          proTip: 'En stadig kantsäkring är avgörande för att stenarna inte ska glida isär vid belastning.',
+          tolerance: 'Snitt ±2 mm, Kantsäkring i jordfuktig betong',
+          inspectionItem: 'Kapade ytor & Kantsäkring',
+          method: 'Vinkelhake & Stensax/Vinkelslip',
+          requirePhoto: true,
+          isStopPoint: true,
+          customChecklist: ['Passbitar kapade med rena snitt', 'Betongstöd gjutet längs kantsten/kant', 'Städat från slipdamm'],
+        },
+        {
+          id: '3.1',
+          order: 5,
+          phaseNumber: 3,
+          phaseName: 'Fas 3: Fogning & Slutkontroll',
+          title: 'Fogsandning, paddning med gummiduk & slutbesiktning',
+          amaCode: 'DEF.2',
+          instruction: 'Sopa ner torr fogsand i alla fogar. Vibrera ytan med lätt markvibrator (80-100 kg) försedd med gummisula. Efterfyll sand.',
+          studentTip: 'Kör ALDRIG markvibrator på marksten utan gummisula – stenarna spricker och repas direkt!',
+          proTip: 'Lämna ett tunt lager sand på ytan några dagar så fyller regn och vind i fogarna efter hand.',
+          tolerance: 'Fogar helt fyllda, Inga spruckna stenar',
+          inspectionItem: 'Fyllda fogar, planhet & ren yta',
+          method: 'Visuell kontroll & Rätskiva 2 m',
+          requirePhoto: true,
+          isStopPoint: false,
+          customChecklist: ['Torr fogsand nersopad i alla fogar', 'Paddad med gummisula', 'Egenkontrollintyg slutfört och fotograferat'],
+        },
+      ];
+    } else if (projectType === 'ALTAN_TRADACK') {
+      if (!cleanTitle.toLowerCase().includes('altan') && !cleanTitle.toLowerCase().includes('däck')) {
+        cleanTitle = `Övning: ${cleanTitle} (Trädäck & Altan)`;
+      }
+
+      moments = [
+        {
+          id: '1.1',
+          order: 1,
+          phaseNumber: 1,
+          phaseName: 'Fas 1: Grundläggning & Plintar',
+          title: 'Utsättning av plintar och stolpskor på frostfritt djup',
+          amaCode: 'BBC.31',
+          instruction: 'Mät ut grund och diagonaler med kryssmått. Gräv ner till frostfritt djup (eller bärkraftig mark) och gjut/placera plintar med justerbara stolpskor i våg.',
+          studentTip: 'Kontrollera kryssmåttet noga. Om diagonalerna inte stämmer blir altanen skev.',
+          proTip: 'Använd rotationslaser för att få alla stolpskor på exakt rätt nivå redan från början.',
+          tolerance: 'Höjd ±5 mm, Kryssmått ±3 mm',
+          inspectionItem: 'Plintplacering & Stolpskor i våg',
+          method: 'Stålbandmått & Rotationslaser',
+          requirePhoto: true,
+          isStopPoint: true,
+          customChecklist: ['Plintar på frostfritt djup', 'Stolpskor i våg och linje', 'Diagonalmått verifierat'],
+        },
+        {
+          id: '1.2',
+          order: 2,
+          phaseNumber: 1,
+          phaseName: 'Fas 1: Bärlina & Stomme',
+          title: 'Bärlina 45x170 mm & förankring',
+          amaCode: 'HSD.1',
+          instruction: 'Montera bärlinor av tryckimpregnerat virke (klass NTR/A). Förankra mot fasad med fasadskruv/expander och i stolpskor med fransk träskruv.',
+          studentTip: 'Lägg tjärpapp eller syllpapp mellan bärlina och husets grundsockel för att hindra fuktvandring.',
+          proTip: 'Kontrollera att virket är rakt (vänd eventuell krökning uppåt så rätar tyngden ut bärlinan).',
+          tolerance: 'I våg ±2 mm per meter',
+          inspectionItem: 'Bärlinans infästning & Planhet',
+          method: 'Vattenpass & Momentdragare',
+          requirePhoto: true,
+          isStopPoint: false,
+          customChecklist: ['Korrekt virkesdimension', 'Syllpapp mot husgrund', 'Infästningar ordentligt dragna'],
+        },
+        {
+          id: '2.1',
+          order: 3,
+          phaseNumber: 2,
+          phaseName: 'Fas 2: Bjälklag & Trall',
+          title: 'Golvbjälklag c/c 600 mm med balkskor',
+          amaCode: 'HSD.2',
+          instruction: 'Montera golvbjälkar c/c 600 mm vinkelrätt mot bärlinan. Använd balkskor och ankarspik/ankarskruv. Montera kortlingar för stabilitet.',
+          studentTip: 'Mät c/c-måttet mellan bjälkarnas centrumlinje, inte kanterna.',
+          proTip: 'Sätt dubbla bjälkar där fris eller skarvar ska ligga.',
+          tolerance: 'c/c 600 ±5 mm',
+          inspectionItem: 'Bjälklagsavstånd & Infästning',
+          method: 'Måttband & Vinkelhake',
+          requirePhoto: true,
+          isStopPoint: true,
+          customChecklist: ['c/c 600 mm kontrollerat', 'Balkskor spikade i alla hål med ankarspik', 'Kortlingar monterade'],
+        },
+        {
+          id: '2.2',
+          order: 4,
+          phaseNumber: 2,
+          phaseName: 'Fas 2: Bjälklag & Trall',
+          title: 'Tralläggning med distans & fris',
+          amaCode: 'HSD.3',
+          instruction: 'Montera trallvirke (t.ex. 28x120 mm NTR/AB). Använd distansklossar (3-5 mm beroende på fuktkvot). Skruva med rostfri trallskruv A2/A4 i raka linjer.',
+          studentTip: 'Spänn ett murarsnöre som referenslinje för skruvraderna så ser altanen proffsig ut.',
+          proTip: 'Förborra i ändträ för att undvika att trallbrädorna spricker när du skruvar nära änden.',
+          tolerance: 'Distans 3-5 mm, Skruv i linje ±2 mm',
+          inspectionItem: 'Springbredd & Skruvlinjer',
+          method: 'Distansklossar & Snörslå',
+          requirePhoto: true,
+          isStopPoint: false,
+          customChecklist: ['Trall monterad med kärnsidan uppåt', 'Jämn distans mellan brädorna', 'Raka skruvrader'],
+        },
+        {
+          id: '3.1',
+          order: 5,
+          phaseNumber: 3,
+          phaseName: 'Fas 3: Slutkontroll & Säkerhet',
+          title: 'Slutkontroll, räckesinfästning & egenkontrollintyg',
+          amaCode: 'HSD.4',
+          instruction: 'Kapa brädändar med cirkelsåg längs styrskena. Montera fris eller täckbrädor. Kontrollera bärighet och slutför egenkontrollintyget.',
+          studentTip: 'Kapa alla utstickande ändar på en gång med sänksåg/cirkelsåg så blir snittet spikrakt.',
+          proTip: 'Slipa av eventuella vassa sågkanter med sandpapper så ingen får stickor i fötterna.',
+          tolerance: 'Rak kapning ±2 mm',
+          inspectionItem: 'Slutfinish, bärighet & säkerhet',
+          method: 'Visuell inspektion & Fotobevis',
+          requirePhoto: true,
+          isStopPoint: false,
+          customChecklist: ['Ändar kapade i rak linje', 'Fris monterad', 'Fotodokumentation klar i appen'],
+        },
+      ];
+    } else {
+      // Husgrund & Schakt
+      if (!cleanTitle.toLowerCase().includes('grund') && !cleanTitle.toLowerCase().includes('schakt')) {
+        cleanTitle = `Övning: ${cleanTitle} (Schakt & Grundläggning)`;
+      }
+
+      moments = [
+        {
+          id: '1.1',
+          order: 1,
+          phaseNumber: 1,
+          phaseName: 'Fas 1: Utsättning & Schakt',
+          title: 'Utsättning av profiler, höjdfix & kryssmått',
+          amaCode: 'BBC.31',
+          instruction: `Mät ut grundlinjer och profiler enligt ritning (${cleanName}). Kontrollera diagonalmått och höjdfix med laser.`,
+          studentTip: 'Spänn linorna hårt och mät kryssmåttet från båda hållen. Diagonalerna ska vara identiska på millimetern.',
+          proTip: 'Slå ner profilpinnarna stadigt i marken och snedsträva dem så de inte rör sig vid maskinkörning.',
+          tolerance: '±5 mm',
+          inspectionItem: 'Kryssmått & Diagonaler',
+          method: 'Stålbandmått & Rotationslaser',
+          requirePhoto: true,
+          isStopPoint: false,
+          customChecklist: ['Profilställningar stabilt förankrade', 'Snören i våg och 90 graders vinkel', 'Diagonalmått kontrollerat'],
+        },
+        {
+          id: '1.2',
+          order: 2,
+          phaseNumber: 1,
+          phaseName: 'Fas 1: Utsättning & Schakt',
+          title: 'Schaktbotten, schaktning & fiberduk',
+          amaCode: 'CBB.1',
+          instruction: 'Schakta bort matjord ner till bärkraftig mineraljord enligt ritningens schaktnivå. Rensa schaktbotten från lös lera och stenar. Lägg ut geotextil.',
+          studentTip: 'Gräv inte för djupt i onödan – orörd mark är stabilast. Övergräver du måste du återfylla med dyr makadam.',
+          proTip: 'Granska schaktbotten noga efter vatten eller organiskt material. Ta alltid ett foto av orörd botten före dukläggning.',
+          tolerance: '±20 mm',
+          inspectionItem: 'Schaktnivå & Bärkraft',
+          method: 'Rotationslaser med avvägningsstång',
+          requirePhoto: true,
+          isStopPoint: true,
+          customChecklist: ['Matjord helt bortschaktad', 'Schaktbotten jämnad och fri från vatten', 'Geotextil N2 lagd med 30 cm överlapp'],
+        },
+        {
+          id: '2.1',
+          order: 3,
+          phaseNumber: 2,
+          phaseName: 'Fas 2: Bärlager & Ledningar',
+          title: 'Kapillärbrytande makadambädd med packning',
+          amaCode: 'DCB.1',
+          instruction: 'Lägg ut kapillärbrytande makadambädd (t.ex. 8/16 eller 11/16 mm). Packa med markvibrator (minst 400 kg) med 4–6 överfarter. Avväg ytan.',
+          studentTip: 'Dra av ytan med rätskiva eller laser mellan banorna så blir det enkelt att ställa kantelementen i våg.',
+          proTip: 'Var noga med packningen intill schaktkanter så det inte sätter sig i efterhand.',
+          tolerance: '±10 mm',
+          inspectionItem: 'Packningsgrad & Bäddtjocklek',
+          method: 'Rotationslaser & Rätskiva',
+          requirePhoto: true,
+          isStopPoint: false,
+          customChecklist: ['Rätt fraktion utlagd', 'Packat med rätt antal överfarter', 'Kontroll av planhet mot fixpunkt'],
+        },
+        {
+          id: '2.2',
+          order: 4,
+          phaseNumber: 2,
+          phaseName: 'Fas 2: Bärlager & Ledningar',
+          title: 'Bottenavlopp, radon & skyddsrör',
+          amaCode: 'PBB.1',
+          instruction: 'Montera avloppsledningar och skyddsrör med fall (minst 10-20 promille). Trycktesta och fixera med kringfyllning innan gjutning.',
+          studentTip: 'Ett fall på 10 promille betyder 1 cm fall per meter rör. Vatten rinner inte uppför!',
+          proTip: 'Kontrollera att gummipackningarna i muffarna är smorda och inte har rullat ur sitt spår.',
+          tolerance: 'Fall 10-20 promille',
+          inspectionItem: 'Rörlutning & Täthet',
+          method: 'Digitalt vattenpass / Rotationslaser',
+          requirePhoto: true,
+          isStopPoint: true,
+          customChecklist: ['Rör lagda med jämnt fall utan svackor', 'Muffar rena och rätt monterade', 'Rör fixerade med kringfyllning'],
+        },
+        {
+          id: '3.1',
+          order: 5,
+          phaseNumber: 3,
+          phaseName: 'Fas 3: Slutkontroll & Egenkontrollintyg',
+          title: 'Slutkontroll, toleranser och fotodokumentation',
+          amaCode: 'YJJ.1',
+          instruction: 'Genomför komplett kontrollmätning av alla färdiga moment. Sammanställ fotobevis, mätvärden och signatur i appen för lärarens slutbedömning.',
+          studentTip: 'Gå igenom hela listan en extra gång och kontrollera att varje moment har både kommentar och bild.',
+          proTip: 'Ett proffsigt egenkontrollintyg med tydliga foton är din bästa kvalitetsstämpel gentemot beställaren.',
+          tolerance: 'Fullständig dokumentation',
+          inspectionItem: 'Slutbesiktning & Signatur',
+          method: 'Visuell kontroll & Fotobevis',
+          requirePhoto: true,
+          isStopPoint: false,
+          customChecklist: ['Alla delmoment godkända och signerade', 'Tidsstämplade foton bifogade med måttsticka/laser', 'Arbetsområdet städat'],
+        },
+      ];
     }
 
-    const moments = [
-      {
-        id: '1.1',
-        order: 1,
-        phaseNumber: 1,
-        phaseName: 'Fas 1: Utsättning & Mätning',
-        title: 'Utsättning av profiler och kryssmått',
-        amaCode: 'BBC.31',
-        instruction: `Mät ut grundlinjer och profiler enligt bifogat PDF-underlag (${cleanName}). Kontrollera diagonalmått och höjdfix med laser.`,
-        studentTip: 'Spänn linorna hårt och mät kryssmåttet från båda hållen. Diagonalerna ska vara identiska på millimetern.',
-        proTip: 'Slå ner profilpinnarna stadigt i marken och snedsträva dem så de inte rör sig när maskiner eller skottkärror kör förbi.',
-        tolerance: '±5 mm',
-        inspectionItem: 'Kryssmått & Diagonaler',
-        method: 'Stålbandmått & Rotationslaser',
-        requirePhoto: true,
-        isStopPoint: false,
-        customChecklist: [
-          'Profilställningar stabilt förankrade',
-          'Snören i våg och 90 graders vinkel',
-          'Diagonalmått kontrollerat och dokumenterat',
-        ],
-      },
-      {
-        id: '1.2',
-        order: 2,
-        phaseNumber: 1,
-        phaseName: 'Fas 1: Utsättning & Schakt',
-        title: 'Schaktbotten och fiberduk',
-        amaCode: 'CBB.1',
-        instruction: 'Schakta bort matjord ner till bärkraftig mineraljord enligt ritningens schaktnivå. Rensa schaktbotten från lös lera och stenar. Lägg ut geotextil med minst 30 cm överlapp.',
-        studentTip: 'Gräv inte för djupt i onödan – orörd mark är alltid stabilast. Övergräver du måste du återfylla med dyr makadam.',
-        proTip: 'Granska schaktbotten noga efter vatten eller organiskt material. Ta alltid ett foto av orörd botten före dukläggning.',
-        tolerance: '±20 mm',
-        inspectionItem: 'Schaktnivå & Bärkraft',
-        method: 'Rotationslaser med mottagare på avvägningsstång',
-        requirePhoto: true,
-        isStopPoint: true, // STOPPUNKT
-        customChecklist: [
-          'Matjord och organiskt material helt bortschaktat',
-          'Schaktbotten jämnad och fri från vatten/lera',
-          'Geotextil (Bruksklass N2/N3) lagd med 300 mm överlapp',
-        ],
-      },
-      {
-        id: '2.1',
-        order: 3,
-        phaseNumber: 2,
-        phaseName: 'Fas 2: Bärlager & Ledningar',
-        title: 'Bärlager / Makadambädd med packning',
-        amaCode: 'DCB.1',
-        instruction: 'Lägg ut kapillärbrytande makadambädd enligt ritningens tjocklek. Packa med markvibrator (minst 400 kg) med 4–6 överfarter. Avväg ytan.',
-        studentTip: 'Dra av ytan med rätskiva eller laser mellan banorna så blir det enkelt att ställa kantelementen i våg.',
-        proTip: 'Var noga med packningen intill schaktkanter och runt rör så det inte sätter sig i efterhand.',
-        tolerance: '±10 mm',
-        inspectionItem: 'Packningsgrad & Bäddtjocklek',
-        method: 'Rotationslaser & Rätskiva',
-        requirePhoto: true,
-        isStopPoint: false,
-        customChecklist: [
-          'Rätt fraktion utlagd (t.ex. Makadam 8/16 eller 11/16 mm)',
-          'Packat med rätt antal överfarter (markvibrator)',
-          'Kontroll av planhet och höjd mot fixpunkt',
-        ],
-      },
-      {
-        id: '2.2',
-        order: 4,
-        phaseNumber: 2,
-        phaseName: 'Fas 2: Bärlager & Ledningar',
-        title: 'VA-ledningar, skyddsrör och fallkontroll',
-        amaCode: 'PBB.1',
-        instruction: 'Montera ledningar och skyddsrör enligt ritning. Kontrollera fall (minst 10–20 promille bort mot anslutningspunkt). Fixera ledningar med kringfyllning.',
-        studentTip: 'Ett fall på 10 promille betyder 1 cm fall per meter rör. Vatten rinner inte uppför!',
-        proTip: 'Kontrollera att gummipackningarna i muffarna är smorda och inte har rullat ur sitt spår när rören trycks ihop.',
-        tolerance: 'Fall 10–20 promille (1:100 till 1:50)',
-        inspectionItem: 'Rörlutning & Täthet',
-        method: 'Digitalt vattenpass / Rotationslaser',
-        requirePhoto: true,
-        isStopPoint: true, // STOPPUNKT: Får ej byggas in före besiktning
-        customChecklist: [
-          'Rör lagda med jämnt fall utan svackor',
-          'Muffar rena och rätt monterade med glidmedel',
-          'Rör fixerade med kringfyllning före gjutning/övertäckning',
-        ],
-      },
-      {
-        id: '3.1',
-        order: 5,
-        phaseNumber: 3,
-        phaseName: 'Fas 3: Slutkontroll & Egenkontrollintyg',
-        title: 'Slutkontroll, toleranser och fotodokumentation',
-        amaCode: 'YJJ.1',
-        instruction: 'Genomför komplett kontrollmätning av alla färdiga moment. Sammanställ fotobevis, mätvärden och signatur i appen för lärarens slutbedömning.',
-        studentTip: 'Gå igenom hela listan en extra gång och kontrollera att varje moment har både kommentar och bild.',
-        proTip: 'Ett proffsigt egenkontrollintyg med tydliga foton är din bästa kvalitetsstämpel gentemot beställaren.',
-        tolerance: 'Fullständig dokumentation',
-        inspectionItem: 'Slutbesiktning & Signatur',
-        method: 'Visuell kontroll & Fotobevis',
-        requirePhoto: true,
-        isStopPoint: false,
-        customChecklist: [
-          'Alla delmoment godkända och signerade',
-          'Tidsstämplade foton bifogade med måttsticka/laser',
-          'Arbetsområdet städat och redskap rengjorda',
-        ],
-      },
-    ];
-
     return {
-      title,
-      code: `PDF-${Math.floor(100 + Math.random() * 900)}`,
-      description: `Övningsinstruktion genererad utifrån uppladdat PDF-underlag: "${cleanName}". Innehåller mått, AMA-koder, stoppunkter och kontrollkrav för eleven.`,
-      instructions: `1. Studera bifogat PDF-dokument (${cleanName}) noggrant innan arbete påbörjas.\n2. Arbeta fasvis och kontrollera toleranser med laser och stålbandmått.\n3. OBSERVERA STOPPUNKTER (markerade med gult/stoppikon): Kalla på yrkesläraren för inspektion innan inbyggnad eller gjutning sker!\n4. Fotodokumentera alla moment med tidsstämpel.`,
+      title: cleanTitle,
+      code: `ÖVN-${Math.floor(100 + Math.random() * 900)}`,
+      description: `Övningsinstruktion baserad på underlaget "${cleanName}". Innehåller mått, AMA-koder, stoppunkter och kontrollkrav för eleven.`,
+      instructions: `1. Studera bifogat underlag (${cleanName}) noggrant innan arbete påbörjas.\n2. Arbeta fasvis och kontrollera toleranser med laser och stålbandmått.\n3. OBSERVERA STOPPUNKTER (markerade med stoppikon): Kalla på yrkesläraren för inspektion innan inbyggnad eller övertäckning sker!\n4. Fotodokumentera alla moment med tidsstämpel.`,
       projectType,
-      targetGroup: targetGroup || 'Byggprogrammet (BA)',
+      targetGroup: targetGroup || (projectType === 'ENSKILT_AVLOPP' ? 'Anläggare (Mark & Anläggning)' : 'Byggprogrammet (BA)'),
       educationLevel: 'ALL',
-      specialization: specialization || 'ALL',
+      specialization: specialization || (projectType === 'ENSKILT_AVLOPP' ? 'MARK_VA' : 'ALL'),
       difficulty: (difficulty as any) || 'MEDEL',
-      estimatedDuration: '4–6 timmar',
-      creationSource: 'PDF_IMPORT',
+      estimatedDuration: projectType === 'ENSKILT_AVLOPP' ? '6–8 timmar' : '4–6 timmar',
+      creationSource: isTextFile ? 'FORMS_IMPORT' : 'PDF_IMPORT',
       fieldMeasurements: {
-        sideA: projectType === 'HUSGRUND' ? 10.0 : projectType === 'PLATTSATTNING' ? 6.0 : 5.0,
-        sideB: projectType === 'HUSGRUND' ? 8.0 : projectType === 'PLATTSATTNING' ? 4.0 : 3.6,
-        fallCmPerM: projectType === 'PLATTSATTNING' ? 2.0 : 1.0,
+        sideA: projectType === 'HUSGRUND' ? 10.0 : projectType === 'PLATTSATTNING' ? 6.0 : 8.0,
+        sideB: projectType === 'HUSGRUND' ? 8.0 : projectType === 'PLATTSATTNING' ? 4.0 : 3.0,
+        fallCmPerM: projectType === 'ENSKILT_AVLOPP' ? 1.0 : projectType === 'PLATTSATTNING' ? 2.0 : 1.0,
       },
       moments,
     };
   };
 
-  // If Gemini client is available, extract directly from the PDF bytes
+  // If Gemini client is available, extract directly from text or PDF bytes
   if (ai && apiKey) {
     try {
-      const prompt = `Du är en svensk senior bygg- och anläggningslärare, besiktningsman och expert på AMA Anläggning, AMA Hus, BBR och svensk yrkesutbildning (Bygg- och anläggningsprogrammet).
-Analysera det bifogade PDF-dokumentet ("${cleanName}") som innehåller en ritning, arbetsbeskrivning, kursuppgift, AMA-föreskrift eller övningsinstruktion.
+      const prompt = `Du är en svensk yrkeslärare och besiktningsman inom Bygg- och anläggningsprogrammet.
+Analysera följande underlagsdokument ("${cleanName}") och skapa en praktisk yrkesövning för elever.
 
-MÅL:
-Skapa en komplett, strukturerad och pedagogisk yrkesövning för elever med tydliga faser och kontrollmoment (egenkontrollpunkter) baserat på informationen i PDF-dokumentet.
-
-REGLER FÖR MOMENTEN:
-1. Skapa mellan 4 och 9 relevanta delmoment uppdelade i 2-4 faser (t.ex. Fas 1: Utsättning & Schakt, Fas 2: Ledningar & Bärlager, Fas 3: Form/Betong eller Beläggning, Fas 4: Slutkontroll).
-2. Ange korrekta svenska AMA-koder (t.ex. BBC.31 för profiler/utsättning, CBB.1 för avtäckning/schakt, CBE.1 för schaktbotten, YJJ.1 för fiberduk, PBB.51 för dräneringsledningar, PBB.1 för spillvatten, DCB.1 för makadambädd, DFD för radon/fuktskydd, etc.).
-3. Markera kritiska moment som "isStopPoint: true" (Stoppunkt: moment som INTE får byggas över/gjutas in förrän yrkesläraren har inspekterat och godkänt på plats, t.ex. bottenavlopp och armering före betonggjutning).
-4. Ange konkreta toleranser (t.ex. "±5 mm", "Fall 10-20 promille", "±10 mm").
-5. Ge varje moment ett handfast "studentTip" (vad eleven ska tänka på) och ett "proTip" (yrkeslärarens erfarenhet från verkliga byggarbetsplatser).
-6. Skapa 3-5 konkreta bockpunkter i "customChecklist" för varje moment.
+*** KRITISKA KRAV PÅ 100% STRIKT TEXTTROHET ***
+1. Skapa ENBART och EXKLUSIVT moment som faktiskt beskrivs i detta underlag!
+2. Hitta ALDRIG på egna moment eller standardmoment (såsom slamavskiljare, provgrop, kantelement, schakt eller betonggjutning) om de inte uttryckligen specificeras i underlaget.
+3. Om underlaget har 2 punkter eller instruktioner, ska övningen innehålla EXAKT 2 moment. Om underlaget har 4 punkter, skapa EXAKT 4 moment.
+4. Rubriker och instruktioner i moments ska hämtas ordagrant från underlaget.
+5. Tilldela korrekta svenska AMA-koder (t.ex. PBB för avlopp/spillvatten, CBB för schakt, YJJ för fiberduk, DEF för marksten).
+6. Markera isStopPoint: true om momentet kräver lärarens inspektion före övertäckning/inbyggnad eller om underlaget specificerar stoppunkt.
+7. Projektets typ måste vara: "${projectType}" (tillåtna värden: "HUSGRUND", "ALTAN_TRADACK", "PLATTSATTNING", "ENSKILT_AVLOPP").
 
 Svara ENBART med ett strikt JSON-objekt enligt följande struktur (inga markdown-kodblock, bara rå JSON):
 {
   "title": "string (Beskrivande övningstitel)",
-  "code": "string (Kort unik övningskod, t.ex. ÖVN-301 eller SCHAKT-1)",
+  "code": "string (Kort unik övningskod, t.ex. ÖVN-301)",
   "description": "string (Sammanfattning av övningen)",
   "instructions": "string (Övergripande arbetsinstruktioner för eleven)",
-  "projectType": "HUSGRUND" | "ALTAN_TRADACK" | "PLATTSATTNING" | "ENSKILT_AVLOPP",
-  "targetGroup": "${targetGroup || 'Byggprogrammet (BA)'}",
+  "projectType": "${projectType}",
+  "targetGroup": "${targetGroup || (projectType === 'ENSKILT_AVLOPP' ? 'Anläggare (Mark & Anläggning)' : 'Byggprogrammet (BA)')}",
   "educationLevel": "ALL",
-  "specialization": "${specialization || 'ALL'}",
+  "specialization": "${specialization || (projectType === 'ENSKILT_AVLOPP' ? 'MARK_VA' : 'ALL')}",
   "difficulty": "${difficulty || 'MEDEL'}",
-  "estimatedDuration": "string (t.ex. 4 timmar eller 2 dagar)",
+  "estimatedDuration": "string",
   "fieldMeasurements": {
     "sideA": 10.0,
     "sideB": 8.0,
-    "fallCmPerM": 1.0
+    "fallCmPerM": ${projectType === 'ENSKILT_AVLOPP' ? 1.0 : projectType === 'PLATTSATTNING' ? 2.0 : 1.0}
   },
   "moments": [
     {
       "id": "1.1",
       "order": 1,
       "phaseNumber": 1,
-      "phaseName": "Fas 1: Utsättning & Schakt",
+      "phaseName": "string",
       "title": "string",
       "amaCode": "string",
       "instruction": "string",
@@ -1518,19 +1981,25 @@ Svara ENBART med ett strikt JSON-objekt enligt följande struktur (inga markdown
   ]
 }`;
 
+      // Build contents schema strictly according to @google/genai specification: { parts: [...] }
+      const contentsParts: any[] = [];
+      if (extractedDocText) {
+        contentsParts.push({ text: prompt });
+      } else {
+        contentsParts.push({
+          inlineData: {
+            mimeType: 'application/pdf',
+            data: rawBase64,
+          },
+        });
+        contentsParts.push({ text: prompt });
+      }
+
       const geminiResponse = await ai.models.generateContent({
         model: 'gemini-3.8-flash',
-        contents: [
-          {
-            inlineData: {
-              mimeType: 'application/pdf',
-              data: rawBase64,
-            },
-          },
-          {
-            text: prompt,
-          },
-        ],
+        contents: {
+          parts: contentsParts,
+        },
         config: {
           responseMimeType: 'application/json',
         },
@@ -1541,7 +2010,6 @@ Svara ENBART med ett strikt JSON-objekt enligt följande struktur (inga markdown
       try {
         parsed = JSON.parse(responseText);
       } catch (jsonErr) {
-        // Strip markdown backticks if any
         const cleaned = responseText.replace(/^```json\s*/i, '').replace(/\s*```$/i, '').trim();
         parsed = JSON.parse(cleaned);
       }
@@ -1549,10 +2017,11 @@ Svara ENBART med ett strikt JSON-objekt enligt följande struktur (inga markdown
       if (parsed && parsed.title && Array.isArray(parsed.moments) && parsed.moments.length > 0) {
         const cleanExerciseDraft = {
           ...parsed,
-          code: parsed.code ? String(parsed.code).toUpperCase().trim() : `PDF-${Math.floor(100 + Math.random() * 900)}`,
-          creationSource: 'PDF_IMPORT',
-          targetGroup: targetGroup || parsed.targetGroup || 'Byggprogrammet (BA)',
-          specialization: specialization || parsed.specialization || 'ALL',
+          code: parsed.code ? String(parsed.code).toUpperCase().trim() : `ÖVN-${Math.floor(100 + Math.random() * 900)}`,
+          projectType: parsed.projectType || projectType,
+          creationSource: isTextFile ? 'FORMS_IMPORT' : 'PDF_IMPORT',
+          targetGroup: targetGroup || parsed.targetGroup || (projectType === 'ENSKILT_AVLOPP' ? 'Anläggare (Mark & Anläggning)' : 'Byggprogrammet (BA)'),
+          specialization: specialization || parsed.specialization || (projectType === 'ENSKILT_AVLOPP' ? 'MARK_VA' : 'ALL'),
           difficulty: difficulty || parsed.difficulty || 'MEDEL',
           attachedPdf,
         };
@@ -1565,13 +2034,13 @@ Svara ENBART med ett strikt JSON-objekt enligt följande struktur (inga markdown
         });
       }
     } catch (err: any) {
-      console.warn('Gemini PDF import notice, using expert fallback:', err?.message || err);
+      console.warn('Gemini document import notice, using domain-aligned fallback:', err?.message || err);
     }
   }
 
   // Fallback if AI call failed or AI client was not initialized
   const fallbackDraft = {
-    ...generateFallbackExercise(),
+    ...generateDomainFallbackExercise(),
     attachedPdf,
   };
 
@@ -1579,7 +2048,7 @@ Svara ENBART med ett strikt JSON-objekt enligt följande struktur (inga markdown
     ok: true,
     exerciseDraft: fallbackDraft,
     attachedPdf,
-    source: 'FALLBACK_EXPERT',
+    source: 'DOMAIN_EXPERT',
   });
 });
 
@@ -1648,10 +2117,10 @@ app.post('/api/exercises/import-forms', async (req, res) => {
 
     if (currentQ) questionItems.push(currentQ);
 
-    // If no explicit questions were identified, create standard structured moments from lines
+    // If questions or items were identified, create moments directly for them
     const finalMoments =
-      questionItems.length >= 2
-        ? questionItems.slice(0, 8).map((q, idx) => {
+      questionItems.length >= 1
+        ? questionItems.map((q, idx) => {
             const phaseNum = idx < 2 ? 1 : idx < 5 ? 2 : 3;
             const phaseName =
               phaseNum === 1

@@ -376,15 +376,20 @@ export interface FormsImportResponse {
   source?: string;
 }
 
+export interface ExerciseImportOptions {
+  targetGroup?: string;
+  specialization?: string;
+  difficulty?: string;
+  textContent?: string;
+  fileType?: 'PDF' | 'TXT' | 'PASTE' | 'FORMS';
+  strictMode?: boolean;
+}
+
 export const importExerciseFromPdf = async (
   pdfBase64: string,
   fileName: string,
   fileSize: number,
-  options?: {
-    targetGroup?: string;
-    specialization?: string;
-    difficulty?: string;
-  }
+  options?: ExerciseImportOptions
 ): Promise<PdfImportResponse> => {
   try {
     const res = await safeFetchJson<PdfImportResponse>('/api/exercises/import-pdf', {
@@ -394,6 +399,9 @@ export const importExerciseFromPdf = async (
         pdfBase64,
         fileName,
         fileSize,
+        textContent: options?.textContent,
+        fileType: options?.fileType,
+        strictMode: options?.strictMode ?? true,
         ...options,
       }),
     });
@@ -404,13 +412,13 @@ export const importExerciseFromPdf = async (
     return {
       ok: false,
       exerciseDraft: {},
-      error: res.error || 'Kunde inte importera eller tolka PDF-filen.',
+      error: res.error || 'Kunde inte importera eller tolka underlaget.',
     };
   } catch (err: any) {
     return {
       ok: false,
       exerciseDraft: {},
-      error: err?.message || 'Ett nätverksfel uppstod vid uppladdning av PDF.',
+      error: err?.message || 'Ett nätverksfel uppstod vid uppladdning av underlag.',
     };
   }
 };

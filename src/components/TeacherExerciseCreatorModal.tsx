@@ -107,6 +107,7 @@ export const TeacherExerciseCreatorModal: React.FC<TeacherExerciseCreatorModalPr
   const [attachedPdfDoc, setAttachedPdfDoc] = useState<AttachedPdfDoc | null>(null);
   const [pdfUploadFile, setPdfUploadFile] = useState<File | null>(null);
   const [pdfDataUrl, setPdfDataUrl] = useState<string | null>(null);
+  const [docUploadText, setDocUploadText] = useState<string>('');
   const [isAnalyzingPdf, setIsAnalyzingPdf] = useState(false);
   const [pdfAnalysisStage, setPdfAnalysisStage] = useState('Läser in PDF-dokumentet...');
   const [pdfTargetGroup, setPdfTargetGroup] = useState('Byggprogrammet (BA)');
@@ -248,11 +249,32 @@ export const TeacherExerciseCreatorModal: React.FC<TeacherExerciseCreatorModalPr
   };
 
   const handleSelectPdfFile = (file: File) => {
-    if (!file.name.toLowerCase().endsWith('.pdf') && file.type !== 'application/pdf') {
-      showToast('Endast PDF-filer (.pdf) stöds.');
+    const isPdf = file.name.toLowerCase().endsWith('.pdf') || file.type === 'application/pdf';
+    const isText =
+      file.name.toLowerCase().endsWith('.txt') ||
+      file.name.toLowerCase().endsWith('.md') ||
+      file.name.toLowerCase().endsWith('.text') ||
+      file.type.startsWith('text/');
+
+    if (!isPdf && !isText) {
+      showToast('Stödjer PDF (.pdf) och textfiler (.txt, .md).');
       return;
     }
+
     setPdfUploadFile(file);
+
+    if (isText) {
+      const textReader = new FileReader();
+      textReader.onload = () => {
+        const text = (textReader.result as string) || '';
+        setDocUploadText(text);
+        showToast(`Textfil "${file.name}" inläst (${text.length} tecken).`);
+      };
+      textReader.readAsText(file);
+    } else {
+      setDocUploadText('');
+    }
+
     const reader = new FileReader();
     reader.onload = () => {
       setPdfDataUrl(reader.result as string);
@@ -347,31 +369,39 @@ export const TeacherExerciseCreatorModal: React.FC<TeacherExerciseCreatorModalPr
   };
 
   const handleRunPdfAnalysis = async () => {
-    if (!pdfDataUrl || !pdfUploadFile) {
-      showToast('Vänligen välj en PDF-fil först.');
+    if (!pdfUploadFile) {
+      showToast('Vänligen välj en PDF- eller TXT-fil först.');
       return;
     }
 
+    const isTextFile =
+      pdfUploadFile.name.toLowerCase().endsWith('.txt') ||
+      pdfUploadFile.name.toLowerCase().endsWith('.md') ||
+      Boolean(docUploadText);
+
     setIsAnalyzingPdf(true);
-    setPdfAnalysisStage('Läser in PDF-dokumentet...');
+    setPdfAnalysisStage(isTextFile ? 'Läser in och tolkar underlagstext...' : 'Läser in PDF-dokumentet...');
 
     const timer1 = setTimeout(() => {
-      setPdfAnalysisStage('Tolkar ritningsmått, schaktkrav och AMA-föreskrifter med AI...');
+      setPdfAnalysisStage('Tolkar underlagets exakta moment och toleranser...');
     }, 1200);
 
     const timer2 = setTimeout(() => {
-      setPdfAnalysisStage('Genererar faser, stoppunkter och kontrollpunkter för eleverna...');
-    }, 3200);
+      setPdfAnalysisStage('Skapar fältmoment och kontroller för eleverna...');
+    }, 2800);
 
     try {
       const res = await importExerciseFromPdf(
-        pdfDataUrl,
+        pdfDataUrl || '',
         pdfUploadFile.name,
         pdfUploadFile.size,
         {
           targetGroup: pdfTargetGroup,
           specialization: pdfSpecialization,
           difficulty: pdfDifficulty,
+          textContent: docUploadText.trim() || undefined,
+          fileType: isTextFile ? 'TXT' : 'PDF',
+          strictMode: true,
         }
       );
 
@@ -404,7 +434,7 @@ export const TeacherExerciseCreatorModal: React.FC<TeacherExerciseCreatorModalPr
           res.attachedPdf || {
             name: pdfUploadFile.name,
             sizeFormatted: `${(pdfUploadFile.size / 1024).toFixed(1)} KB`,
-            dataUrl: pdfDataUrl,
+            dataUrl: pdfDataUrl || '',
             uploadedAt: new Date().toISOString().replace('T', ' ').substring(0, 16),
           }
         );
@@ -1101,19 +1131,7 @@ export const TeacherExerciseCreatorModal: React.FC<TeacherExerciseCreatorModalPr
                   }`}
                 >
                   <FileText className="w-3.5 h-3.5" />
-                  <span>PDF-fil</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setImportSubTab('FORMS_FILE')}
-                  className={`py-2 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 cursor-pointer transition-colors ${
-                    importSubTab === 'FORMS_FILE'
-                      ? 'bg-purple-500 text-black font-black shadow-md'
-                      : 'text-slate-400 hover:text-white'
-                  }`}
-                >
-                  <FileSpreadsheet className="w-3.5 h-3.5" />
-                  <span>Forms-fil (.csv/.json)</span>
+                  <span>PDF / TXT-fil</span>
                 </button>
                 <button
                   type="button"
@@ -1125,7 +1143,19 @@ export const TeacherExerciseCreatorModal: React.FC<TeacherExerciseCreatorModalPr
                   }`}
                 >
                   <ClipboardPaste className="w-3.5 h-3.5" />
-                  <span>Klistra in frågor</span>
+                  <span>Klistra in text</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setImportSubTab('FORMS_FILE')}
+                  className={`py-2 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 cursor-pointer transition-colors ${
+                    importSubTab === 'FORMS_FILE'
+                      ? 'bg-purple-500 text-black font-black shadow-md'
+                      : 'text-slate-400 hover:text-white'
+                  }`}
+                >
+                  <FileSpreadsheet className="w-3.5 h-3.5" />
+                  <span>Forms (.csv/.json)</span>
                 </button>
                 <button
                   type="button"
@@ -1145,7 +1175,7 @@ export const TeacherExerciseCreatorModal: React.FC<TeacherExerciseCreatorModalPr
               <input
                 type="file"
                 ref={pdfInputRef}
-                accept="application/pdf,.pdf"
+                accept=".pdf,application/pdf,.txt,text/plain,.md,text/markdown"
                 onChange={(e) => {
                   const f = e.target.files?.[0];
                   if (f) handleSelectPdfFile(f);
@@ -1163,7 +1193,7 @@ export const TeacherExerciseCreatorModal: React.FC<TeacherExerciseCreatorModalPr
                 className="hidden"
               />
 
-              {/* TAB 1: PDF File */}
+              {/* TAB 1: PDF or TXT File */}
               {importSubTab === 'PDF' && (
                 <div className="space-y-4">
                   {!pdfUploadFile ? (
@@ -1182,15 +1212,15 @@ export const TeacherExerciseCreatorModal: React.FC<TeacherExerciseCreatorModalPr
                       </div>
                       <div className="space-y-1">
                         <div className="text-base font-black text-white group-hover:text-emerald-300 transition-colors">
-                          Klicka för att bläddra eller dra och släpp din PDF här
+                          Klicka för att bläddra eller dra och släpp din PDF- eller TXT-fil här
                         </div>
                         <p className="text-xs text-slate-400">
-                          Stödjer ritningar, uppgiftsblad, AMA-beskrivningar och arbetsordrar (.pdf upp till 50 MB)
+                          Stödjer ritningar (.pdf), uppgiftsblad och ren text (.txt, .md upp till 50 MB)
                         </p>
                       </div>
                       <div className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#222] text-xs font-bold text-slate-300 border border-[#333]">
                         <Upload className="w-3.5 h-3.5 text-emerald-400" />
-                        <span>Välj PDF-fil från din enhet</span>
+                        <span>Välj PDF- eller TXT-fil från din enhet</span>
                       </div>
                     </div>
                   ) : (
@@ -1205,7 +1235,7 @@ export const TeacherExerciseCreatorModal: React.FC<TeacherExerciseCreatorModalPr
                               {pdfUploadFile.name}
                             </div>
                             <p className="text-xs text-emerald-400 font-medium">
-                              {(pdfUploadFile.size / 1024).toFixed(1)} KB · Redo för analys
+                              {(pdfUploadFile.size / 1024).toFixed(1)} KB · Redo för strikt tolkning
                             </p>
                           </div>
                         </div>
@@ -1215,12 +1245,37 @@ export const TeacherExerciseCreatorModal: React.FC<TeacherExerciseCreatorModalPr
                           onClick={() => {
                             setPdfUploadFile(null);
                             setPdfDataUrl(null);
+                            setDocUploadText('');
                           }}
                           className="px-3 py-1.5 bg-[#252525] hover:bg-[#333] text-slate-300 hover:text-white rounded-xl text-xs font-bold cursor-pointer transition-colors"
                         >
                           Byt fil
                         </button>
                       </div>
+
+                      {/* If text was extracted from file, show preview & editable area */}
+                      {docUploadText && (
+                        <div className="space-y-1.5 pt-2 border-t border-[#262626]">
+                          <div className="flex items-center justify-between text-xs text-slate-400">
+                            <span className="font-bold text-slate-300">
+                              Förhandsgranskning av underlagets text:
+                            </span>
+                            <span className="text-[11px] text-slate-500">
+                              {docUploadText.split('\n').filter((l) => l.trim().length > 0).length} rader · {docUploadText.length} tecken
+                            </span>
+                          </div>
+                          <textarea
+                            value={docUploadText}
+                            onChange={(e) => setDocUploadText(e.target.value)}
+                            rows={6}
+                            className="w-full bg-[#111] border border-[#2e2e2e] focus:border-emerald-500 rounded-xl p-3 text-xs text-slate-200 font-mono resize-y focus:outline-none"
+                            placeholder="Textinnehåll från filen..."
+                          />
+                          <p className="text-[11px] text-emerald-400">
+                            ✓ Strikt läge aktivt: Endast moment som uttryckligen finns i denna text kommer att skapas.
+                          </p>
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>
